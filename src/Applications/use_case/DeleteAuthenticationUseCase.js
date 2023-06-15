@@ -1,16 +1,16 @@
 class DeleteAuthenticationUseCase {
   constructor({ authenticationRepository }) {
-    this._authenticationRepository = authenticationRepository;
+    this.authenticationRepository = authenticationRepository;
   }
 
   async execute(useCasePayload) {
-    this._validatePayload(useCasePayload);
+    this.validatePayload(useCasePayload);
     const { refreshToken } = useCasePayload;
-    await this._authenticationRepository.checkAvailabilityToken(refreshToken);
-    await this._authenticationRepository.deleteToken(refreshToken);
+    await this.authenticationRepository.checkAvailabilityToken(refreshToken);
+    await this.authenticationRepository.deleteToken(refreshToken);
   }
 
-  _validatePayload(payload) {
+  validatePayload(payload) {
     const { refreshToken } = payload;
     if (!refreshToken) {
       throw new Error(
