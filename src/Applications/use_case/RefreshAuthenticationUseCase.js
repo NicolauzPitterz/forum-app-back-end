@@ -1,33 +1,35 @@
 class RefreshAuthenticationUseCase {
-  constructor({
-    authenticationRepository,
-    authenticationTokenManager,
-  }) {
-    this._authenticationRepository = authenticationRepository;
-    this._authenticationTokenManager = authenticationTokenManager;
+  constructor({ authenticationRepository, authenticationTokenManager }) {
+    this.authenticationRepository = authenticationRepository;
+    this.authenticationTokenManager = authenticationTokenManager;
   }
 
   async execute(useCasePayload) {
-    this._verifyPayload(useCasePayload);
+    this.verifyPayload(useCasePayload);
     const { refreshToken } = useCasePayload;
 
-    await this._authenticationTokenManager.verifyRefreshToken(refreshToken);
-    await this._authenticationRepository.checkAvailabilityToken(refreshToken);
+    await this.authenticationTokenManager.verifyRefreshToken(refreshToken);
+    await this.authenticationRepository.checkAvailabilityToken(refreshToken);
 
-    const { username, id } = await this._authenticationTokenManager.decodePayload(refreshToken);
+    const { username, id } =
+      await this.authenticationTokenManager.decodePayload(refreshToken);
 
-    return this._authenticationTokenManager.createAccessToken({ username, id });
+    return this.authenticationTokenManager.createAccessToken({ username, id });
   }
 
-  _verifyPayload(payload) {
+  verifyPayload(payload) {
     const { refreshToken } = payload;
 
     if (!refreshToken) {
-      throw new Error('REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN');
+      throw new Error(
+        'REFRESH_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',
+      );
     }
 
     if (typeof refreshToken !== 'string') {
-      throw new Error('REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION');
+      throw new Error(
+        'REFRESH_AUTHENTICATION_USE_CASE.PAYLOAD_NOT_MEET_DATA_TYPE_SPECIFICATION',
+      );
     }
   }
 }
