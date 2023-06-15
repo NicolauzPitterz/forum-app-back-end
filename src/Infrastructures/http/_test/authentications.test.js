@@ -100,9 +100,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(401);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'kredensial yang Anda masukkan salah',
-      );
+      expect(responseJson.message).toEqual('kredensial yang Anda masukkan salah');
     });
 
     it('should response 400 if login payload not contain needed property', async () => {
@@ -123,9 +121,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'harus mengirimkan username dan password',
-      );
+      expect(responseJson.message).toEqual('harus mengirimkan username dan password');
     });
 
     it('should response 400 if login payload wrong data type', async () => {
@@ -147,9 +143,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'username dan password harus string',
-      );
+      expect(responseJson.message).toEqual('username dan password harus string');
     });
   });
 
@@ -176,9 +170,7 @@ describe('/authentications endpoint', () => {
           password: 'secret',
         },
       });
-      const {
-        data: { refreshToken },
-      } = JSON.parse(loginResponse.payload);
+      const { data: { refreshToken } } = JSON.parse(loginResponse.payload);
 
       // Action
       const response = await server.inject({
@@ -254,9 +246,7 @@ describe('/authentications endpoint', () => {
     it('should return 400 if refresh token not registered in database', async () => {
       // Arrange
       const server = await createServer(container);
-      const refreshToken = await container
-        .getInstance(AuthenticationTokenManager.name)
-        .createRefreshToken({ username: 'dicoding' });
+      const refreshToken = await container.getInstance(AuthenticationTokenManager.name).createRefreshToken({ username: 'dicoding' });
 
       // Action
       const response = await server.inject({
@@ -271,9 +261,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'refresh token tidak ditemukan di database',
-      );
+      expect(responseJson.message).toEqual('refresh token tidak ditemukan di database');
     });
   });
 
@@ -317,9 +305,7 @@ describe('/authentications endpoint', () => {
       const responseJson = JSON.parse(response.payload);
       expect(response.statusCode).toEqual(400);
       expect(responseJson.status).toEqual('fail');
-      expect(responseJson.message).toEqual(
-        'refresh token tidak ditemukan di database',
-      );
+      expect(responseJson.message).toEqual('refresh token tidak ditemukan di database');
     });
 
     it('should response 400 if payload not contain refresh token', async () => {
