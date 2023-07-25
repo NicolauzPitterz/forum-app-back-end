@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const UsersTableTestHelper = {
@@ -22,8 +23,8 @@ const UsersTableTestHelper = {
       values: [id],
     };
 
-    const result = await pool.query(query);
-    return result.rows;
+    const { rows } = await pool.query(query);
+    return rows;
   },
 
   async cleanTable() {

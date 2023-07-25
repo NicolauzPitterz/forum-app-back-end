@@ -13,7 +13,7 @@ class CommentRepository {
     throw new Error(this.errorMessage);
   }
 
-  async getCommentByThreadId(threadId) {
+  async getCommentsByThreadId(threadId) {
     throw new Error(this.errorMessage);
   }
 

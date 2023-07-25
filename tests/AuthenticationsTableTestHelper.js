@@ -1,4 +1,5 @@
 /* istanbul ignore file */
+
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
 const AuthenticationsTableTestHelper = {
@@ -17,9 +18,9 @@ const AuthenticationsTableTestHelper = {
       values: [token],
     };
 
-    const result = await pool.query(query);
+    const { rows } = await pool.query(query);
 
-    return result.rows;
+    return rows;
   },
 
   async cleanTable() {

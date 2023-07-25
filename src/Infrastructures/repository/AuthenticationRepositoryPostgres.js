@@ -1,5 +1,5 @@
-const InvariantError = require('../../Commons/exceptions/InvariantError');
-const AuthenticationRepository = require('../../Domains/authentications/AuthenticationRepository');
+const { InvariantError } = require('../../Commons');
+const { AuthenticationRepository } = require('../../Domains');
 
 class AuthenticationRepositoryPostgres extends AuthenticationRepository {
   constructor(pool) {
@@ -22,9 +22,9 @@ class AuthenticationRepositoryPostgres extends AuthenticationRepository {
       values: [token],
     };
 
-    const result = await this.pool.query(query);
+    const { rows } = await this.pool.query(query);
 
-    if (result.rows.length === 0) {
+    if (rows.length === 0) {
       throw new InvariantError('refresh token tidak ditemukan di database');
     }
   }

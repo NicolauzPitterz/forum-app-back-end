@@ -5,13 +5,16 @@ class DeleteAuthenticationUseCase {
 
   async execute(useCasePayload) {
     this.validatePayload(useCasePayload);
+
     const { refreshToken } = useCasePayload;
+
     await this.authenticationRepository.checkAvailabilityToken(refreshToken);
     await this.authenticationRepository.deleteToken(refreshToken);
   }
 
   validatePayload(payload) {
     const { refreshToken } = payload;
+
     if (!refreshToken) {
       throw new Error(
         'DELETE_AUTHENTICATION_USE_CASE.NOT_CONTAIN_REFRESH_TOKEN',

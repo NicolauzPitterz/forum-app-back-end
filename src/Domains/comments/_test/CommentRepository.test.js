@@ -12,7 +12,7 @@ describe('CommentRepository interface', () => {
       errorMessage,
     );
     await expect(
-      commentRepository.getCommentByThreadId(''),
+      commentRepository.getCommentsByThreadId(''),
     ).rejects.toThrowError(errorMessage);
     await expect(
       commentRepository.verifyCommentOwner('', ''),

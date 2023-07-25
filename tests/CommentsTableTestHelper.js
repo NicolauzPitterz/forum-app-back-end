@@ -9,11 +9,21 @@ const CommentsTableTestHelper = {
     owner = 'nicolauzp',
   }) {
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4)',
+      text: 'INSERT INTO comments VALUES($1, $2, $3)',
       values: [id, content, owner],
     };
 
     await pool.query(query);
+  },
+
+  async findCommentById(id) {
+    const query = {
+      text: 'SELECT * FROM comments WHERE id = $1',
+      values: [id],
+    };
+
+    const { rows } = await pool.query(query);
+    return rows[0];
   },
 
   async cleanTable() {
