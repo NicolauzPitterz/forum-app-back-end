@@ -1,4 +1,4 @@
-const { createServer } = require('../..');
+const createServer = require('../createServer');
 
 describe('HTTP server', () => {
   it('should response 404 when request unregistered route', async () => {

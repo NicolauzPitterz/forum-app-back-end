@@ -1,4 +1,4 @@
-const { DeleteAuthenticationUseCase } = require('../..');
+const DeleteAuthenticationUseCase = require('../DeleteAuthenticationUseCase');
 const { AuthenticationRepository } = require('../../../Domains');
 
 describe('DeleteAuthenticationUseCase', () => {

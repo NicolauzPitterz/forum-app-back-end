@@ -5,15 +5,19 @@ class CommentRepository {
     this.errorMessage = 'COMMENT_REPOSITORY.METHOD_NOT_IMPLEMENTED';
   }
 
-  async addComment(threadComment) {
+  async addComment(newComment) {
     throw new Error(this.errorMessage);
   }
 
-  async deleteCommentById(commentId) {
+  async deleteCommentById(id) {
     throw new Error(this.errorMessage);
   }
 
   async getCommentsByThreadId(threadId) {
+    throw new Error(this.errorMessage);
+  }
+
+  async verifyComment(id) {
     throw new Error(this.errorMessage);
   }
 

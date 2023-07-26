@@ -1,4 +1,4 @@
-const { AddThreadUseCase } = require('../..');
+const AddThreadUseCase = require('../AddThreadUseCase');
 const {
   AddThread,
   AddedThread,
@@ -30,14 +30,14 @@ describe('AddThreadUseCase', () => {
 
     const addedThread = await addThreadUseCase.execute(
       useCasePayload,
-      mockAddedThread.owner,
+      'user-123',
     );
 
     expect(addedThread).toStrictEqual(
       new AddedThread({
-        id: mockAddedThread.id,
-        title: mockAddedThread.title,
-        owner: mockAddedThread.owner,
+        id: 'thread-123',
+        title: useCasePayload.title,
+        owner: 'user-123',
       }),
     );
 
@@ -45,7 +45,7 @@ describe('AddThreadUseCase', () => {
       new AddThread({
         title: useCasePayload.title,
         body: useCasePayload.body,
-        owner: mockAddedThread.owner,
+        owner: 'user-123',
       }),
     );
   });

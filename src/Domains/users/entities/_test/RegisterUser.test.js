@@ -3,8 +3,8 @@ const RegisterUser = require('../RegisterUser');
 describe('a RegisterUser entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     const payload = {
-      username: 'abc',
-      password: 'abc',
+      username: 'nicolauzp',
+      password: 'secret',
     };
 
     expect(() => new RegisterUser(payload)).toThrowError(
@@ -16,7 +16,7 @@ describe('a RegisterUser entities', () => {
     const payload = {
       username: 123,
       fullname: true,
-      password: 'abc',
+      password: 'secret',
     };
 
     expect(() => new RegisterUser(payload)).toThrowError(
@@ -28,7 +28,7 @@ describe('a RegisterUser entities', () => {
     const payload = {
       username: 'nicolauzpnicolauzpnicolauzpnicolauzpnicolauzpnicolauzp',
       fullname: 'Nicolauz Pitters',
-      password: 'abc',
+      password: 'secret',
     };
 
     expect(() => new RegisterUser(payload)).toThrowError(
@@ -40,7 +40,7 @@ describe('a RegisterUser entities', () => {
     const payload = {
       username: 'nicolauz p',
       fullname: 'Nicolauz Pitters',
-      password: 'abc',
+      password: 'secret',
     };
 
     expect(() => new RegisterUser(payload)).toThrowError(
@@ -52,7 +52,7 @@ describe('a RegisterUser entities', () => {
     const payload = {
       username: 'nicolauzp',
       fullname: 'Nicolauz Pitters',
-      password: 'abc',
+      password: 'secret',
     };
 
     const { username, fullname, password } = new RegisterUser(payload);

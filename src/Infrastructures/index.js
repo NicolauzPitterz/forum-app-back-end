@@ -1,3 +1,5 @@
+const container = require('./container');
+
 const pool = require('./database/postgres/pool');
 
 const createServer = require('./http/createServer');
@@ -11,6 +13,7 @@ const BcryptEncryptionHelper = require('./security/BcryptPasswordHash');
 const JwtTokenManager = require('./security/JwtTokenManager');
 
 module.exports = {
+  container,
   pool,
   createServer,
   AuthenticationRepositoryPostgres,

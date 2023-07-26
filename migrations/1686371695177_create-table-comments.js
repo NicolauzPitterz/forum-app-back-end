@@ -6,6 +6,10 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       primaryKey: true,
     },
+    threadId: {
+      type: 'VARCHAR(50)',
+      notNull: true,
+    },
     content: {
       type: 'TEXT',
       notNull: true,
@@ -14,17 +18,23 @@ exports.up = (pgm) => {
       type: 'VARCHAR(50)',
       notNull: true,
     },
+    date: {
+      type: 'TIMESTAMP',
+      notNull: true,
+      default: pgm.func('now()'),
+    },
     isDelete: {
       type: 'BOOLEAN',
       notNull: true,
       default: false,
     },
-    createdAt: {
-      type: 'TIMESTAMP',
-      notNull: true,
-      default: pgm.func('now()'),
-    },
   });
+
+  pgm.addConstraint(
+    'comments',
+    'fk_comments.threadId_threads.id',
+    `FOREIGN KEY("threadId") REFERENCES threads(id) ON DELETE CASCADE`,
+  );
 
   pgm.addConstraint(
     'comments',

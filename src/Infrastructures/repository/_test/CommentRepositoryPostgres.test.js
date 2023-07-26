@@ -1,9 +1,15 @@
-const { pool, CommentRepositoryPostgres } = require('../..');
+const {
+  pool,
+  CommentRepositoryPostgres,
+  ThreadRepositoryPostgres,
+} = require('../..');
 const { AddComment, AddedComment } = require('../../../Domains');
 const {
   UsersTableTestHelper,
   CommentsTableTestHelper,
+  ThreadsTableTestHelper,
 } = require('../../../../tests');
+const { NotFoundError } = require('../../../Commons');
 
 describe('CommentRepositoryPostgres', () => {
   afterEach(async () => {
@@ -16,6 +22,19 @@ describe('CommentRepositoryPostgres', () => {
   });
 
   describe('addComment function', () => {
+    it('should throw NotFoundError when thread not found', async () => {
+      const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
+      await UsersTableTestHelper.addUser({ id: 'user-123' });
+      await ThreadsTableTestHelper.addThread({
+        id: 'thread-123',
+        owner: 'user-123',
+      });
+
+      await expect(
+        threadRepositoryPostgres.getThreadDetailById('thread-321'),
+      ).rejects.toThrowError(NotFoundError);
+    });
+
     it('should persist add comment and return added comment correctly', async () => {
       await UsersTableTestHelper.addUser({
         id: 'user-123',
@@ -25,8 +44,8 @@ describe('CommentRepositoryPostgres', () => {
       });
 
       const newComment = new AddComment({
-        id: 'A Comment',
-        content: 'Thread Comment',
+        threadId: 'thread-123',
+        content: 'A Thread Comment',
         owner: 'user-123',
       });
 
@@ -47,51 +66,10 @@ describe('CommentRepositoryPostgres', () => {
       expect(addedComment).toStrictEqual(
         new AddedComment({
           id: 'comment-123',
-          content: 'Thread Comment',
+          content: 'A Thread Comment',
           owner: 'user-123',
         }),
       );
     });
   });
-
-  // describe('getThreadDetailById function', () => {
-  //   it('should throw NotFoundError when thread not found', async () => {
-  //     const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
-  //     await UsersTableTestHelper.addUser({ id: 'user-123' });
-  //     await ThreadsTableTestHelper.addThread({
-  //       id: 'thread-123',
-  //       owner: 'user-123',
-  //     });
-
-  //     await expect(
-  //       threadRepositoryPostgres.getThreadDetailById('thread-321'),
-  //     ).rejects.toThrowError(NotFoundError);
-  //   });
-
-  //   it('should return thread if found', async () => {
-  //     const threadRepositoryPostgres = new ThreadRepositoryPostgres(pool, {});
-  //     await UsersTableTestHelper.addUser({
-  //       id: 'user-123',
-  //       username: 'nicolauzp',
-  //     });
-  //     await ThreadsTableTestHelper.addThread({
-  //       id: 'thread-123',
-  //       title: 'A Thread',
-  //       body: 'A Thread Body',
-  //       owner: 'user-123',
-  //     });
-
-  //     const returnedThread = await threadRepositoryPostgres.getThreadDetailById(
-  //       'thread-123',
-  //     );
-
-  //     expect(returnedThread).toStrictEqual({
-  //       id: 'thread-123',
-  //       title: 'A Thread',
-  //       body: 'A Thread Body',
-  //       owner: 'user-123',
-  //       createdAt: returnedThread.createdAt,
-  //     });
-  //   });
-  // });
 });

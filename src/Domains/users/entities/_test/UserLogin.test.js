@@ -3,7 +3,7 @@ const UserLogin = require('../UserLogin');
 describe('UserLogin entities', () => {
   it('should throw error when payload does not contain needed property', () => {
     const payload = {
-      username: 'dicoding',
+      username: 'nicolauzp',
     };
 
     expect(() => new UserLogin(payload)).toThrowError(
@@ -13,7 +13,7 @@ describe('UserLogin entities', () => {
 
   it('should throw error when payload not meet data type specification', () => {
     const payload = {
-      username: 'dicoding',
+      username: 'nicolauzp',
       password: 12345,
     };
 
@@ -24,8 +24,8 @@ describe('UserLogin entities', () => {
 
   it('should create UserLogin entities correctly', () => {
     const payload = {
-      username: 'dicoding',
-      password: '12345',
+      username: 'nicolauzp',
+      password: 'secret',
     };
 
     const userLogin = new UserLogin(payload);

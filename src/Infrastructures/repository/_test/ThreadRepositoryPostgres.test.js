@@ -83,14 +83,14 @@ describe('ThreadRepositoryPostgres', () => {
       const returnedThread = await threadRepositoryPostgres.getThreadDetailById(
         'thread-123',
       );
-
-      expect(returnedThread).toStrictEqual({
+      const expectedThread = {
         id: 'thread-123',
         title: 'A Thread',
         body: 'A Thread Body',
-        owner: 'user-123',
-        createdAt: returnedThread.createdAt,
-      });
+        date: returnedThread.date,
+        username: 'nicolauzp',
+      };
+      expect(returnedThread).toStrictEqual(expectedThread);
     });
   });
 });

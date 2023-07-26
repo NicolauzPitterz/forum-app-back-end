@@ -5,15 +5,15 @@ class ThreadRepository {
     this.errorMessage = 'THREAD_REPOSITORY.METHOD_NOT_IMPLEMENTED';
   }
 
-  async addThread(thread) {
+  async addThread(newThread) {
     throw new Error(this.errorMessage);
   }
 
-  async getThreadDetailById(threadId) {
+  async getThreadDetailById(id) {
     throw new Error(this.errorMessage);
   }
 
-  async verifyThread(threadId) {
+  async verifyThread(id) {
     throw new Error(this.errorMessage);
   }
 }

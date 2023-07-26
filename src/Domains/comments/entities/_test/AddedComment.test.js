@@ -4,7 +4,7 @@ describe('a AddedComment entities', () => {
   it('should throw error when payload did not contain needed property', () => {
     const payload = {
       id: 'comment-123',
-      content: 'Thread Comment',
+      content: 'A Thread Comment',
     };
 
     expect(() => new AddedComment(payload)).toThrowError(
@@ -15,7 +15,7 @@ describe('a AddedComment entities', () => {
   it('should throw error when payload did not meet data type specification', () => {
     const payload = {
       id: 123,
-      content: 'Thread Comment',
+      content: 'A Thread Comment',
       owner: {},
     };
 
@@ -27,7 +27,7 @@ describe('a AddedComment entities', () => {
   it('should create AddedComment object correctly', () => {
     const payload = {
       id: 'comment-123',
-      content: 'Thread Comment',
+      content: 'A Thread Comment',
       owner: 'user-123',
     };
 

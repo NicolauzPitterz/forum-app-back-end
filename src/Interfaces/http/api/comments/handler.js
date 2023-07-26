@@ -8,6 +8,7 @@ class CommentsHandler {
   }
 
   async postCommentHandler(request, h) {
+    const { threadId } = request.params;
     const { id: userId } = request.auth.credentials;
 
     const addCommentUseCase = await this.container.getInstance(
@@ -15,6 +16,7 @@ class CommentsHandler {
     );
 
     const addedComment = await addCommentUseCase.execute(
+      threadId,
       request.payload,
       userId,
     );
