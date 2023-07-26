@@ -32,7 +32,7 @@ describe('an AddComment entities', () => {
 
     const { threadId, content, owner } = new AddComment(payload);
 
-    expect(threadId).toEqual(payload.content);
+    expect(threadId).toEqual(payload.threadId);
     expect(content).toEqual(payload.content);
     expect(owner).toEqual(payload.owner);
   });

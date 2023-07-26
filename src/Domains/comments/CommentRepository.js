@@ -17,7 +17,7 @@ class CommentRepository {
     throw new Error(this.errorMessage);
   }
 
-  async verifyComment(id) {
+  async verifyComment(threadId, commentId) {
     throw new Error(this.errorMessage);
   }
 

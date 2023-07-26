@@ -1,4 +1,4 @@
-/* instanbul ignore file */
+/* istanbul ignore file */
 
 const pool = require('../src/Infrastructures/database/postgres/pool');
 
@@ -8,10 +8,11 @@ const CommentsTableTestHelper = {
     threadId = 'thread-123',
     content = 'A Thread Comment',
     owner = 'user-123',
+    isDelete = false,
   }) {
     const query = {
-      text: 'INSERT INTO comments VALUES($1, $2, $3, $4)',
-      values: [id, threadId, content, owner],
+      text: `INSERT INTO comments (id, "threadId", content, owner, "isDelete") VALUES($1, $2, $3, $4, $5)`,
+      values: [id, threadId, content, owner, isDelete],
     };
 
     await pool.query(query);
@@ -21,16 +22,6 @@ const CommentsTableTestHelper = {
     const query = {
       text: 'SELECT * FROM comments WHERE id = $1',
       values: [id],
-    };
-
-    const { rows } = await pool.query(query);
-    return rows[0];
-  },
-
-  async findCommentsByThreadId(threadId) {
-    const query = {
-      text: `SELECT c.id, u.username, c.date, c.content FROM comments c LEFT JOIN users u ON c.owner = u.id WHERE c."threadId" = $1`,
-      values: [threadId],
     };
 
     const { rows } = await pool.query(query);

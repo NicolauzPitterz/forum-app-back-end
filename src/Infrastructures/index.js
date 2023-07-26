@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 const container = require('./container');
 
 const pool = require('./database/postgres/pool');

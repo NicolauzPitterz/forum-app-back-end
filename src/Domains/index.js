@@ -1,3 +1,5 @@
+/* istanbul ignore file */
+
 const AuthenticationRepository = require('./authentications/AuthenticationRepository');
 const NewAuth = require('./authentications/entities/NewAuth');
 
@@ -8,10 +10,12 @@ const UserRepository = require('./users/UserRepository');
 
 const AddThread = require('./threads/entities/AddThread');
 const AddedThread = require('./threads/entities/AddedThread');
+const ThreadDetail = require('./threads/entities/ThreadDetail');
 const ThreadRepository = require('./threads/ThreadRepository');
 
 const AddComment = require('./comments/entities/AddComment');
 const AddedComment = require('./comments/entities/AddedComment');
+const CommentDetail = require('./comments/entities/CommentDetail');
 const CommentRepository = require('./comments/CommentRepository');
 
 module.exports = {
@@ -23,8 +27,10 @@ module.exports = {
   UserRepository,
   AddThread,
   AddedThread,
+  ThreadDetail,
   ThreadRepository,
   AddComment,
   AddedComment,
+  CommentDetail,
   CommentRepository,
 };

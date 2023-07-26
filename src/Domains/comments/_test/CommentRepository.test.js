@@ -14,7 +14,7 @@ describe('CommentRepository interface', () => {
     await expect(
       commentRepository.getCommentsByThreadId(''),
     ).rejects.toThrowError(errorMessage);
-    await expect(commentRepository.verifyComment('')).rejects.toThrowError(
+    await expect(commentRepository.verifyComment('', '')).rejects.toThrowError(
       errorMessage,
     );
     await expect(
