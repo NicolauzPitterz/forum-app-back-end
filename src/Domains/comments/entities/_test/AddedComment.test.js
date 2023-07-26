@@ -28,7 +28,7 @@ describe('a AddedComment entities', () => {
     const payload = {
       id: 'comment-123',
       content: 'Thread Comment',
-      owner: 'nicolauzp',
+      owner: 'user-123',
     };
 
     const { id, content, owner } = new AddedComment(payload);

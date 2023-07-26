@@ -3,6 +3,7 @@ const pool = require('./database/postgres/pool');
 const createServer = require('./http/createServer');
 
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
+const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 
@@ -13,6 +14,7 @@ module.exports = {
   pool,
   createServer,
   AuthenticationRepositoryPostgres,
+  CommentRepositoryPostgres,
   ThreadRepositoryPostgres,
   UserRepositoryPostgres,
   BcryptEncryptionHelper,

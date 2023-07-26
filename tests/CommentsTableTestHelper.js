@@ -6,7 +6,7 @@ const CommentsTableTestHelper = {
   async addComment({
     id = 'comment-123',
     content = 'A Thread Comment',
-    owner = 'nicolauzp',
+    owner = 'user-123',
   }) {
     const query = {
       text: 'INSERT INTO comments VALUES($1, $2, $3)',

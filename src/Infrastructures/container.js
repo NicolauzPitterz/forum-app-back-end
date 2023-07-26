@@ -9,8 +9,16 @@ const Jwt = require('@hapi/jwt');
 const pool = require('./database/postgres/pool');
 
 // service (repository, helper, manager, etc)
-const { UserRepository, ThreadRepository } = require('../Domains');
-const { PasswordHash, AddThreadUseCase } = require('../Applications');
+const {
+  UserRepository,
+  ThreadRepository,
+  CommentRepository,
+} = require('../Domains');
+const {
+  PasswordHash,
+  AddThreadUseCase,
+  AddCommentUseCase,
+} = require('../Applications');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
 
@@ -26,6 +34,7 @@ const { AuthenticationRepository } = require('../Domains');
 const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
 const JwtTokenManager = require('./security/JwtTokenManager');
 const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
+const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
 
 // creating container
 const container = createContainer();
@@ -82,6 +91,20 @@ container.register([
   {
     key: ThreadRepository.name,
     Class: ThreadRepositoryPostgres,
+    parameter: {
+      dependencies: [
+        {
+          concrete: pool,
+        },
+        {
+          concrete: nanoid,
+        },
+      ],
+    },
+  },
+  {
+    key: CommentRepository.name,
+    Class: CommentRepositoryPostgres,
     parameter: {
       dependencies: [
         {
@@ -178,6 +201,19 @@ container.register([
         {
           name: 'threadRepository',
           internal: ThreadRepository.name,
+        },
+      ],
+    },
+  },
+  {
+    key: AddCommentUseCase.name,
+    Class: AddCommentUseCase,
+    parameter: {
+      injectType: 'destructuring',
+      dependencies: [
+        {
+          name: 'commentRepository',
+          internal: CommentRepository.name,
         },
       ],
     },

@@ -10,6 +10,10 @@ const AddThread = require('./threads/entities/AddThread');
 const AddedThread = require('./threads/entities/AddedThread');
 const ThreadRepository = require('./threads/ThreadRepository');
 
+const AddComment = require('./comments/entities/AddComment');
+const AddedComment = require('./comments/entities/AddedComment');
+const CommentRepository = require('./comments/CommentRepository');
+
 module.exports = {
   AuthenticationRepository,
   NewAuth,
@@ -20,4 +24,7 @@ module.exports = {
   AddThread,
   AddedThread,
   ThreadRepository,
+  AddComment,
+  AddedComment,
+  CommentRepository,
 };
