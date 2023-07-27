@@ -1,12 +1,11 @@
-const createServer = require('../createServer');
-const { pool, container } = require('../..');
+const { pool, container, createServer } = require('../..');
 const {
   UsersTableTestHelper,
   AuthenticationsTableTestHelper,
   ThreadsTableTestHelper,
   CommentsTableTestHelper,
+  ServerTestHelper,
 } = require('../../../../tests');
-const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 
 describe('/threads endpoint', () => {
   afterAll(async () => {
@@ -27,7 +26,7 @@ describe('/threads endpoint', () => {
       };
       const server = await createServer(container);
 
-      const { accessToken } = await ServerTestHelper.getAccessToken();
+      const { accessToken } = await ServerTestHelper.getAccessToken({ server });
 
       const response = await server.inject({
         method: 'POST',
@@ -71,7 +70,7 @@ describe('/threads endpoint', () => {
       };
       const server = await createServer(container);
 
-      const { accessToken } = await ServerTestHelper.getAccessToken();
+      const { accessToken } = await ServerTestHelper.getAccessToken({ server });
 
       const response = await server.inject({
         method: 'POST',
@@ -97,7 +96,7 @@ describe('/threads endpoint', () => {
       };
       const server = await createServer(container);
 
-      const { accessToken } = await ServerTestHelper.getAccessToken();
+      const { accessToken } = await ServerTestHelper.getAccessToken({ server });
 
       const response = await server.inject({
         method: 'POST',

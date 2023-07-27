@@ -1,10 +1,10 @@
+const GetThreadDetailUseCase = require('../GetThreadDetailUseCase');
 const {
   ThreadDetail,
   ThreadRepository,
   CommentRepository,
   CommentDetail,
 } = require('../../../Domains');
-const GetThreadDetailUseCase = require('../GetThreadDetailUseCase');
 
 describe('GetThreadDetailUseCase', () => {
   it('should orchestrating the get thread detail action correctly', async () => {

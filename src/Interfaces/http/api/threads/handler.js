@@ -1,3 +1,4 @@
+const autoBind = require('auto-bind');
 const {
   AddThreadUseCase,
   GetThreadDetailUseCase,
@@ -7,8 +8,7 @@ class ThreadsHandler {
   constructor(container) {
     this.container = container;
 
-    this.postThreadHandler = this.postThreadHandler.bind(this);
-    this.getThreadDetailHandler = this.getThreadDetailHandler.bind(this);
+    autoBind(this);
   }
 
   async postThreadHandler(request, h) {

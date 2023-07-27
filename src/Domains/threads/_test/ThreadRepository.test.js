@@ -11,8 +11,5 @@ describe('ThreadRepository interface', () => {
     await expect(threadRepository.getThreadDetailById('')).rejects.toThrowError(
       errorMessage,
     );
-    await expect(threadRepository.verifyThread('')).rejects.toThrowError(
-      errorMessage,
-    );
   });
 });

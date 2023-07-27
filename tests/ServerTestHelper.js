@@ -1,17 +1,13 @@
 /* istanbul ignore file */
 
-const { createServer, container } = require('../src/Infrastructures');
-
 const ServerTestHelper = {
-  async getAccessToken(username = 'nicolauzp') {
+  async getAccessToken({ server, username = 'nicolauzp' }) {
     const payload = {
       username,
       password: 'secret',
     };
 
-    const server = await createServer(container);
-
-    const responseUser = await server.inject({
+    const { payload: responseUserPayload } = await server.inject({
       method: 'POST',
       url: '/users',
       payload: {
@@ -20,14 +16,14 @@ const ServerTestHelper = {
       },
     });
 
-    const responseAuth = await server.inject({
+    const { payload: responseAuthPayload } = await server.inject({
       method: 'POST',
       url: '/authentications',
       payload,
     });
 
-    const { id: userId } = JSON.parse(responseUser.payload).data.addedUser;
-    const { accessToken } = JSON.parse(responseAuth.payload).data;
+    const { id: userId } = JSON.parse(responseUserPayload).data.addedUser;
+    const { accessToken } = JSON.parse(responseAuthPayload).data;
 
     return { accessToken, userId };
   },

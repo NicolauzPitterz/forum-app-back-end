@@ -1,5 +1,5 @@
 const bcrypt = require('bcrypt');
-const { BcryptEncryptionHelper } = require('../..');
+const BcryptEncryptionHelper = require('../BcryptPasswordHash');
 const { AuthenticationError } = require('../../../Commons');
 
 describe('BcryptEncryptionHelper', () => {
@@ -14,7 +14,7 @@ describe('BcryptEncryptionHelper', () => {
 
       expect(typeof encryptedPassword).toEqual('string');
       expect(encryptedPassword).not.toEqual('plain_password');
-      expect(spyHash).toBeCalledWith('plain_password', 10); // 10 adalah nilai saltRound default untuk BcryptEncryptionHelper
+      expect(spyHash).toBeCalledWith('plain_password', 10);
     });
   });
 

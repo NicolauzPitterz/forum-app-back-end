@@ -1,5 +1,5 @@
-const ClientError = require('../ClientError');
 const InvariantError = require('../InvariantError');
+const ClientError = require('../ClientError');
 
 describe('InvariantError', () => {
   it('should create an error correctly', () => {

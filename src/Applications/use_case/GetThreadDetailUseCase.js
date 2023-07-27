@@ -6,16 +6,13 @@ class getThreadUseCase {
 
   async execute(useCaseParam) {
     const { threadId } = useCaseParam;
-
     const threadDetail = await this.threadRepository.getThreadDetailById(
       threadId,
     );
     threadDetail.comments = await this.commentRepository.getCommentsByThreadId(
       threadId,
     );
-
     threadDetail.comments = this.verifyIsDeletedComments(threadDetail.comments);
-
     return threadDetail;
   }
 

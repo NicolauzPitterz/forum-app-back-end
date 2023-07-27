@@ -39,14 +39,7 @@ describe('AddUserUseCase', () => {
 
     const registeredUser = await getUserUseCase.execute(useCasePayload);
 
-    expect(registeredUser).toStrictEqual(
-      new RegisteredUser({
-        id: 'user-123',
-        username: useCasePayload.username,
-        fullname: useCasePayload.fullname,
-      }),
-    );
-
+    expect(registeredUser).toStrictEqual(mockRegisteredUser);
     expect(mockUserRepository.verifyAvailableUsername).toBeCalledWith(
       useCasePayload.username,
     );

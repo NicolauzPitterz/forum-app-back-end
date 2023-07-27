@@ -1,3 +1,4 @@
+const autoBind = require('auto-bind');
 const {
   AddCommentUseCase,
   DeleteCommentUseCase,
@@ -7,8 +8,7 @@ class CommentsHandler {
   constructor(container) {
     this.container = container;
 
-    this.postCommentHandler = this.postCommentHandler.bind(this);
-    this.deleteCommentByIdHandler = this.deleteCommentByIdHandler.bind(this);
+    autoBind(this);
   }
 
   async postCommentHandler(request, h) {

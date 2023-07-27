@@ -58,12 +58,7 @@ describe('GetAuthenticationUseCase', () => {
 
     const actualAuthentication = await loginUserUseCase.execute(useCasePayload);
 
-    expect(actualAuthentication).toEqual(
-      new NewAuth({
-        accessToken: 'access_token',
-        refreshToken: 'refresh_token',
-      }),
-    );
+    expect(actualAuthentication).toEqual(mockedAuthentication);
     expect(mockUserRepository.getPasswordByUsername).toBeCalledWith(
       'nicolauzp',
     );

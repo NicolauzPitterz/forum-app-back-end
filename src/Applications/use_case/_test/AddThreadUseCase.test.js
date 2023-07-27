@@ -33,14 +33,7 @@ describe('AddThreadUseCase', () => {
       'user-123',
     );
 
-    expect(addedThread).toStrictEqual(
-      new AddedThread({
-        id: 'thread-123',
-        title: useCasePayload.title,
-        owner: 'user-123',
-      }),
-    );
-
+    expect(addedThread).toStrictEqual(mockAddedThread);
     expect(mockThreadRepository.addThread).toBeCalledWith(
       new AddThread({
         title: useCasePayload.title,

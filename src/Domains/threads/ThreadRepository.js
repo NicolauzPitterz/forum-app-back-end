@@ -12,10 +12,6 @@ class ThreadRepository {
   async getThreadDetailById(id) {
     throw new Error(this.errorMessage);
   }
-
-  async verifyThread(id) {
-    throw new Error(this.errorMessage);
-  }
 }
 
 module.exports = ThreadRepository;

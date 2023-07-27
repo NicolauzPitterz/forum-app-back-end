@@ -1,5 +1,4 @@
-const createServer = require('../createServer');
-const { pool, container } = require('../..');
+const { pool, container, createServer } = require('../..');
 const { AuthenticationTokenManager } = require('../../../Applications');
 const {
   UsersTableTestHelper,
@@ -234,7 +233,6 @@ describe('/authentications endpoint', () => {
         .getInstance(AuthenticationTokenManager.name)
         .createRefreshToken({ username: 'nicolauzp' });
 
-      // Action
       const response = await server.inject({
         method: 'PUT',
         url: '/authentications',

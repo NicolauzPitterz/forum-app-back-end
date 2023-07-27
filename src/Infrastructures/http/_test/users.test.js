@@ -1,5 +1,4 @@
-const createServer = require('../createServer');
-const { pool, container } = require('../..');
+const { pool, container, createServer } = require('../..');
 const { UsersTableTestHelper } = require('../../../../tests');
 
 describe('/users endpoint', () => {

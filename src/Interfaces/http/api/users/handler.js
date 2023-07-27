@@ -1,10 +1,11 @@
+const autoBind = require('auto-bind');
 const { AddUserUseCase } = require('../../../../Applications');
 
 class UsersHandler {
   constructor(container) {
     this.container = container;
 
-    this.postUserHandler = this.postUserHandler.bind(this);
+    autoBind(this);
   }
 
   async postUserHandler(request, h) {
