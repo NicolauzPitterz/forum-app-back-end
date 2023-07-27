@@ -3,15 +3,15 @@
 const { createServer, container } = require('../src/Infrastructures');
 
 const ServerTestHelper = {
-  async getAccessToken() {
+  async getAccessToken(username = 'nicolauzp') {
     const payload = {
-      username: 'nicolauzp',
+      username,
       password: 'secret',
     };
 
     const server = await createServer(container);
 
-    await server.inject({
+    const responseUser = await server.inject({
       method: 'POST',
       url: '/users',
       payload: {
@@ -20,35 +20,16 @@ const ServerTestHelper = {
       },
     });
 
-    const response = await server.inject({
+    const responseAuth = await server.inject({
       method: 'POST',
       url: '/authentications',
       payload,
     });
 
-    const { accessToken } = JSON.parse(response.payload).data;
+    const { id: userId } = JSON.parse(responseUser.payload).data.addedUser;
+    const { accessToken } = JSON.parse(responseAuth.payload).data;
 
-    return accessToken;
-  },
-
-  async getUserId() {
-    const payload = {
-      username: 'nicolauzp',
-      password: 'secret',
-      fullname: 'Nicolauz Pitters',
-    };
-
-    const server = await createServer(container);
-
-    const response = await server.inject({
-      method: 'POST',
-      url: '/users',
-      payload,
-    });
-
-    const { id: userId } = JSON.parse(response.payload).data.addedUser;
-
-    return userId;
+    return { accessToken, userId };
   },
 };
 

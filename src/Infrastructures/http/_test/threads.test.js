@@ -4,6 +4,7 @@ const {
   UsersTableTestHelper,
   AuthenticationsTableTestHelper,
   ThreadsTableTestHelper,
+  CommentsTableTestHelper,
 } = require('../../../../tests');
 const ServerTestHelper = require('../../../../tests/ServerTestHelper');
 
@@ -19,14 +20,14 @@ describe('/threads endpoint', () => {
   });
 
   describe('when POST /threads', () => {
-    it('should response 201 and persisted user', async () => {
+    it('should response 201 and persisted thread', async () => {
       const requestPayload = {
         title: 'A Thread',
         body: 'A Thread Body',
       };
       const server = await createServer(container);
 
-      const accessToken = await ServerTestHelper.getAccessToken();
+      const { accessToken } = await ServerTestHelper.getAccessToken();
 
       const response = await server.inject({
         method: 'POST',
@@ -70,7 +71,7 @@ describe('/threads endpoint', () => {
       };
       const server = await createServer(container);
 
-      const accessToken = await ServerTestHelper.getAccessToken();
+      const { accessToken } = await ServerTestHelper.getAccessToken();
 
       const response = await server.inject({
         method: 'POST',
@@ -96,7 +97,7 @@ describe('/threads endpoint', () => {
       };
       const server = await createServer(container);
 
-      const accessToken = await ServerTestHelper.getAccessToken();
+      const { accessToken } = await ServerTestHelper.getAccessToken();
 
       const response = await server.inject({
         method: 'POST',
@@ -113,6 +114,88 @@ describe('/threads endpoint', () => {
       expect(responseJson.message).toEqual(
         'tidak dapat membuat thread baru karena tipe data tidak sesuai',
       );
+    });
+  });
+
+  describe('when GET /threads/{threadId}', () => {
+    it('should respond with 200 and return thread detail', async () => {
+      const threadId = 'thread-123';
+
+      const server = await createServer(container);
+
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'nicolauzp',
+      });
+      await UsersTableTestHelper.addUser({
+        id: 'user-456',
+        username: 'pittersn',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        owner: 'user-123',
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-123',
+        threadId,
+        owner: 'user-123',
+      });
+      await CommentsTableTestHelper.addComment({
+        id: 'comment-456',
+        threadId,
+        owner: 'user-123',
+      });
+
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.comments).toHaveLength(2);
+    });
+
+    it('should respond with 200 and return thread detail with empty comments', async () => {
+      const threadId = 'thread-123';
+
+      const server = await createServer(container);
+
+      await UsersTableTestHelper.addUser({
+        id: 'user-123',
+        username: 'nicolauzp',
+      });
+      await ThreadsTableTestHelper.addThread({
+        id: threadId,
+        owner: 'user-123',
+      });
+
+      const response = await server.inject({
+        method: 'GET',
+        url: `/threads/${threadId}`,
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(200);
+      expect(responseJson.status).toEqual('success');
+      expect(responseJson.data.thread).toBeDefined();
+      expect(responseJson.data.thread.comments).toHaveLength(0);
+    });
+
+    it('should respond with 404 if thread does not exist', async () => {
+      const server = await createServer(container);
+
+      const response = await server.inject({
+        method: 'GET',
+        url: '/threads/xyz',
+      });
+
+      const responseJson = JSON.parse(response.payload);
+      expect(response.statusCode).toEqual(404);
+      expect(responseJson.status).toEqual('fail');
+      expect(responseJson.message).toBeDefined();
     });
   });
 });
