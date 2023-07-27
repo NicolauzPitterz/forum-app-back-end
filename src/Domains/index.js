@@ -18,6 +18,11 @@ const AddedComment = require('./comments/entities/AddedComment');
 const CommentDetail = require('./comments/entities/CommentDetail');
 const CommentRepository = require('./comments/CommentRepository');
 
+const AddReply = require('./replies/entities/AddReply');
+const AddedReply = require('./replies/entities/AddedReply');
+const ReplyDetail = require('./replies/entities/ReplyDetail');
+const ReplyRepository = require('./replies/ReplyRepository');
+
 module.exports = {
   AuthenticationRepository,
   NewAuth,
@@ -33,4 +38,8 @@ module.exports = {
   AddedComment,
   CommentDetail,
   CommentRepository,
+  AddReply,
+  AddedReply,
+  ReplyDetail,
+  ReplyRepository,
 };

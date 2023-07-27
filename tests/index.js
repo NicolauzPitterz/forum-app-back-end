@@ -5,6 +5,7 @@ const CommentsTableTestHelper = require('./CommentsTableTestHelper');
 const ThreadsTableTestHelper = require('./ThreadsTableTestHelper');
 const UsersTableTestHelper = require('./UsersTableTestHelper');
 const ServerTestHelper = require('./ServerTestHelper');
+const RepliesTableTestHelper = require('./RepliesTableTestHelper');
 
 module.exports = {
   AuthenticationsTableTestHelper,
@@ -12,4 +13,5 @@ module.exports = {
   ThreadsTableTestHelper,
   UsersTableTestHelper,
   ServerTestHelper,
+  RepliesTableTestHelper,
 };

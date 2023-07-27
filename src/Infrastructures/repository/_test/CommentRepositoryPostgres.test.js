@@ -1,11 +1,11 @@
 const { pool, CommentRepositoryPostgres } = require('../..');
+const { NotFoundError } = require('../../../Commons');
 const { AddComment, AddedComment, CommentDetail } = require('../../../Domains');
 const {
   UsersTableTestHelper,
   CommentsTableTestHelper,
   ThreadsTableTestHelper,
 } = require('../../../../tests');
-const { NotFoundError } = require('../../../Commons');
 
 describe('CommentRepositoryPostgres', () => {
   beforeAll(async () => {
