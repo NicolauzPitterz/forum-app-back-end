@@ -27,7 +27,7 @@ describe('a CommentDetail entity', () => {
     );
   });
 
-  it('should create CommentDetail object properly', () => {
+  it('should create CommentDetail entities properly', () => {
     const payload = {
       id: 'comment-123',
       username: 'nicolauzp',

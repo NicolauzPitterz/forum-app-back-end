@@ -1,4 +1,4 @@
-const { pool, container, createServer } = require('../..');
+const { pool, createServer, container } = require('../..');
 const {
   UsersTableTestHelper,
   AuthenticationsTableTestHelper,
@@ -8,7 +8,7 @@ const {
   RepliesTableTestHelper,
 } = require('../../../../tests');
 
-describe('/comments endpoint', () => {
+describe('/replies endpoint', () => {
   afterEach(async () => {
     await UsersTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
@@ -162,7 +162,7 @@ describe('/comments endpoint', () => {
       expect(responseJson.status).toEqual('success');
     });
 
-    it('should respond with 403 when someone does not have access to delete the comment', async () => {
+    it('should respond with 403 when someone does not have access to delete the reply', async () => {
       const server = await createServer(container);
 
       const { userId: firstUserId } = await ServerTestHelper.getAccessToken({

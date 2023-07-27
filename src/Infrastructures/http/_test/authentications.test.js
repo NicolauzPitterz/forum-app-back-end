@@ -1,4 +1,4 @@
-const { pool, container, createServer } = require('../..');
+const { pool, createServer, container } = require('../..');
 const { AuthenticationTokenManager } = require('../../../Applications');
 const {
   UsersTableTestHelper,

@@ -5,6 +5,7 @@ const {
   ThreadsTableTestHelper,
   CommentsTableTestHelper,
   ServerTestHelper,
+  RepliesTableTestHelper,
 } = require('../../../../tests');
 
 describe('/threads endpoint', () => {
@@ -16,6 +17,8 @@ describe('/threads endpoint', () => {
     await UsersTableTestHelper.cleanTable();
     await AuthenticationsTableTestHelper.cleanTable();
     await ThreadsTableTestHelper.cleanTable();
+    await CommentsTableTestHelper.cleanTable();
+    await RepliesTableTestHelper.cleanTable();
   });
 
   describe('when POST /threads', () => {
@@ -118,9 +121,8 @@ describe('/threads endpoint', () => {
 
   describe('when GET /threads/{threadId}', () => {
     it('should respond with 200 and return thread detail', async () => {
-      const threadId = 'thread-123';
-
       const server = await createServer(container);
+      const threadId = 'thread-123';
 
       await UsersTableTestHelper.addUser({
         id: 'user-123',
@@ -130,10 +132,12 @@ describe('/threads endpoint', () => {
         id: 'user-456',
         username: 'pittersn',
       });
+
       await ThreadsTableTestHelper.addThread({
         id: threadId,
         owner: 'user-123',
       });
+
       await CommentsTableTestHelper.addComment({
         id: 'comment-123',
         threadId,
@@ -143,6 +147,17 @@ describe('/threads endpoint', () => {
         id: 'comment-456',
         threadId,
         owner: 'user-123',
+      });
+
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-123',
+        commentId: 'comment-123',
+        owner: 'user-123',
+      });
+      await RepliesTableTestHelper.addReply({
+        id: 'reply-456',
+        commentId: 'comment-456',
+        owner: 'user-456',
       });
 
       const response = await server.inject({
@@ -158,9 +173,8 @@ describe('/threads endpoint', () => {
     });
 
     it('should respond with 200 and return thread detail with empty comments', async () => {
-      const threadId = 'thread-123';
-
       const server = await createServer(container);
+      const threadId = 'thread-123';
 
       await UsersTableTestHelper.addUser({
         id: 'user-123',

@@ -24,7 +24,7 @@ describe('a AddedComment entities', () => {
     );
   });
 
-  it('should create AddedComment object correctly', () => {
+  it('should create addedComment object correctly', () => {
     const payload = {
       id: 'comment-123',
       content: 'A Thread Comment',

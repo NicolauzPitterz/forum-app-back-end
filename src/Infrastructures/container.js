@@ -10,20 +10,18 @@ const pool = require('./database/postgres/pool');
 const {
   UserRepository,
   ThreadRepository,
+  AuthenticationRepository,
   CommentRepository,
   ReplyRepository,
 } = require('../Domains');
-const {
-  PasswordHash,
-  AddThreadUseCase,
-  AddCommentUseCase,
-  DeleteCommentUseCase,
-  GetThreadDetailUseCase,
-  AddReplyUseCase,
-  DeleteReplyUseCase,
-} = require('../Applications');
 const UserRepositoryPostgres = require('./repository/UserRepositoryPostgres');
+const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
+const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
+const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
+const ReplyRepositoryPostgres = require('./repository/ReplyRepositoryPostgres');
 const BcryptPasswordHash = require('./security/BcryptPasswordHash');
+const JwtTokenManager = require('./security/JwtTokenManager');
+const { PasswordHash } = require('../Applications');
 
 const {
   AddUserUseCase,
@@ -31,13 +29,13 @@ const {
   LoginUserUseCase,
   LogoutUserUseCase,
   RefreshAuthenticationUseCase,
+  AddThreadUseCase,
+  AddCommentUseCase,
+  DeleteCommentUseCase,
+  GetThreadDetailUseCase,
+  AddReplyUseCase,
+  DeleteReplyUseCase,
 } = require('../Applications');
-const { AuthenticationRepository } = require('../Domains');
-const AuthenticationRepositoryPostgres = require('./repository/AuthenticationRepositoryPostgres');
-const JwtTokenManager = require('./security/JwtTokenManager');
-const ThreadRepositoryPostgres = require('./repository/ThreadRepositoryPostgres');
-const CommentRepositoryPostgres = require('./repository/CommentRepositoryPostgres');
-const ReplyRepositoryPostgres = require('./repository/ReplyRepositoryPostgres');
 
 const container = createContainer();
 
@@ -266,6 +264,10 @@ container.register([
         {
           name: 'commentRepository',
           internal: CommentRepository.name,
+        },
+        {
+          name: 'replyRepository',
+          internal: ReplyRepository.name,
         },
       ],
     },

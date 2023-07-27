@@ -13,7 +13,7 @@ class ReplyRepository {
     throw new Error(this.errorMessage);
   }
 
-  async getRepliesByCommentId(commentId) {
+  async getRepliesByThreadId(threadId) {
     throw new Error(this.errorMessage);
   }
 

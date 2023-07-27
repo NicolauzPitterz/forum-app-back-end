@@ -23,7 +23,7 @@ describe('a AddedThread entities', () => {
     );
   });
 
-  it('should create AddedThread object correctly', () => {
+  it('should create addedThread object correctly', () => {
     const payload = {
       id: 'thread-123',
       title: 'A Thread',

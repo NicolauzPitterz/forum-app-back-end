@@ -11,9 +11,9 @@ describe('ReplyRepository interface', () => {
     await expect(replyRepository.deleteReplyById('')).rejects.toThrowError(
       errorMessage,
     );
-    await expect(
-      replyRepository.getRepliesByCommentId(''),
-    ).rejects.toThrowError(errorMessage);
+    await expect(replyRepository.getRepliesByThreadId('')).rejects.toThrowError(
+      errorMessage,
+    );
     await expect(replyRepository.verifyReply('', '')).rejects.toThrowError(
       errorMessage,
     );

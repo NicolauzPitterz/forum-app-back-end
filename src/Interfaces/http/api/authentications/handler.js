@@ -14,9 +14,11 @@ class AuthenticationsHandler {
 
   async postAuthenticationHandler(request, h) {
     const loginUserUseCase = this.container.getInstance(LoginUserUseCase.name);
+
     const { accessToken, refreshToken } = await loginUserUseCase.execute(
       request.payload,
     );
+
     const response = h.response({
       status: 'success',
       data: {
@@ -32,6 +34,7 @@ class AuthenticationsHandler {
     const refreshAuthenticationUseCase = this.container.getInstance(
       RefreshAuthenticationUseCase.name,
     );
+
     const accessToken = await refreshAuthenticationUseCase.execute(
       request.payload,
     );
@@ -48,7 +51,9 @@ class AuthenticationsHandler {
     const logoutUserUseCase = this.container.getInstance(
       LogoutUserUseCase.name,
     );
+
     await logoutUserUseCase.execute(request.payload);
+
     return {
       status: 'success',
     };

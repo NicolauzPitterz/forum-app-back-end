@@ -1,7 +1,8 @@
 class getThreadUseCase {
-  constructor({ threadRepository, commentRepository }) {
+  constructor({ threadRepository, commentRepository, replyRepository }) {
     this.threadRepository = threadRepository;
     this.commentRepository = commentRepository;
+    this.replyRepository = replyRepository;
   }
 
   async execute(useCaseParam) {
@@ -12,7 +13,12 @@ class getThreadUseCase {
     threadDetail.comments = await this.commentRepository.getCommentsByThreadId(
       threadId,
     );
+    const replies = await this.replyRepository.getRepliesByThreadId(threadId);
     threadDetail.comments = this.verifyIsDeletedComments(threadDetail.comments);
+    threadDetail.comments = this.getCommentReplies(
+      threadDetail.comments,
+      replies,
+    );
     return threadDetail;
   }
 
@@ -25,6 +31,24 @@ class getThreadUseCase {
     );
 
     return filteredCommentsDetail;
+  }
+
+  getCommentReplies(comments, replies) {
+    const filteredRepliesDetail = replies.map(
+      ({ isDelete, content, ...repliesDetail }) => ({
+        ...repliesDetail,
+        content: isDelete ? '**balasan telah dihapus**' : content,
+      }),
+    );
+
+    return comments.map(({ id, isDelete, content, ...commentDetail }) => ({
+      id,
+      ...commentDetail,
+      replies: filteredRepliesDetail.filter(
+        ({ commentId }) => commentId === id,
+      ),
+      content,
+    }));
   }
 }
 

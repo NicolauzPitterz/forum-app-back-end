@@ -1,7 +1,7 @@
 const autoBind = require('auto-bind');
 const {
-  DeleteCommentUseCase,
   AddReplyUseCase,
+  DeleteReplyUseCase,
 } = require('../../../../Applications');
 
 class RepliesHandler {
@@ -38,11 +38,11 @@ class RepliesHandler {
     const { threadId, commentId, replyId } = request.params;
     const { id: userId } = request.auth.credentials;
 
-    const deleteCommentUseCase = await this.container.getInstance(
-      DeleteCommentUseCase.name,
+    const deleteReplyUseCase = await this.container.getInstance(
+      DeleteReplyUseCase.name,
     );
 
-    await deleteCommentUseCase.execute({
+    await deleteReplyUseCase.execute({
       threadId,
       commentId,
       replyId,

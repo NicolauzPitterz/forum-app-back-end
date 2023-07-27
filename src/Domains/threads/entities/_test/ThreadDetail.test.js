@@ -28,7 +28,7 @@ describe('a ThreadDetail entity', () => {
     );
   });
 
-  it('should create DetailThread object correctly', () => {
+  it('should create DetailThread entities correctly', () => {
     const payload = {
       id: 'thread-123',
       title: 'A Thread',

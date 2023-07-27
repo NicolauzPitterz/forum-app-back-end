@@ -1,68 +1,76 @@
 const { pool, AuthenticationRepositoryPostgres } = require('../..');
 const { InvariantError } = require('../../../Commons');
+const { AuthenticationRepository } = require('../../../Domains');
 const { AuthenticationsTableTestHelper } = require('../../../../tests');
 
 describe('AuthenticationRepository postgres', () => {
-  afterEach(async () => {
-    await AuthenticationsTableTestHelper.cleanTable();
+  it('should be instance of AuthenticationRepository domain', () => {
+    const authenticationRepository = new AuthenticationRepositoryPostgres();
+    expect(authenticationRepository).toBeInstanceOf(AuthenticationRepository);
   });
 
-  afterAll(async () => {
-    await pool.end();
-  });
-
-  describe('addToken function', () => {
-    it('should add token to database', async () => {
-      const authenticationRepository = new AuthenticationRepositoryPostgres(
-        pool,
-      );
-      const token = 'token';
-
-      await authenticationRepository.addToken(token);
-
-      const tokens = await AuthenticationsTableTestHelper.findToken(token);
-      expect(tokens).toHaveLength(1);
-      expect(tokens[0].token).toBe(token);
-    });
-  });
-
-  describe('checkAvailabilityToken function', () => {
-    it('should throw InvariantError if token not available', async () => {
-      const authenticationRepository = new AuthenticationRepositoryPostgres(
-        pool,
-      );
-      const token = 'token';
-
-      await expect(
-        authenticationRepository.checkAvailabilityToken(token),
-      ).rejects.toThrow(InvariantError);
+  describe('behavior test', () => {
+    afterEach(async () => {
+      await AuthenticationsTableTestHelper.cleanTable();
     });
 
-    it('should not throw InvariantError if token available', async () => {
-      const authenticationRepository = new AuthenticationRepositoryPostgres(
-        pool,
-      );
-      const token = 'token';
-      await AuthenticationsTableTestHelper.addToken(token);
-
-      await expect(
-        authenticationRepository.checkAvailabilityToken(token),
-      ).resolves.not.toThrow(InvariantError);
+    afterAll(async () => {
+      await pool.end();
     });
-  });
 
-  describe('deleteToken', () => {
-    it('should delete token from database', async () => {
-      const authenticationRepository = new AuthenticationRepositoryPostgres(
-        pool,
-      );
-      const token = 'token';
-      await AuthenticationsTableTestHelper.addToken(token);
+    describe('addToken function', () => {
+      it('should add token to database', async () => {
+        const authenticationRepository = new AuthenticationRepositoryPostgres(
+          pool,
+        );
+        const token = 'token';
 
-      await authenticationRepository.deleteToken(token);
+        await authenticationRepository.addToken(token);
 
-      const tokens = await AuthenticationsTableTestHelper.findToken(token);
-      expect(tokens).toHaveLength(0);
+        const tokens = await AuthenticationsTableTestHelper.findToken(token);
+        expect(tokens).toHaveLength(1);
+        expect(tokens[0].token).toBe(token);
+      });
+    });
+
+    describe('checkAvailabilityToken function', () => {
+      it('should throw InvariantError if token not available', async () => {
+        const authenticationRepository = new AuthenticationRepositoryPostgres(
+          pool,
+        );
+        const token = 'token';
+
+        await expect(
+          authenticationRepository.checkAvailabilityToken(token),
+        ).rejects.toThrow(InvariantError);
+      });
+
+      it('should not throw InvariantError if token available', async () => {
+        const authenticationRepository = new AuthenticationRepositoryPostgres(
+          pool,
+        );
+        const token = 'token';
+        await AuthenticationsTableTestHelper.addToken(token);
+
+        await expect(
+          authenticationRepository.checkAvailabilityToken(token),
+        ).resolves.not.toThrow(InvariantError);
+      });
+    });
+
+    describe('deleteToken', () => {
+      it('should delete token from database', async () => {
+        const authenticationRepository = new AuthenticationRepositoryPostgres(
+          pool,
+        );
+        const token = 'token';
+        await AuthenticationsTableTestHelper.addToken(token);
+
+        await authenticationRepository.deleteToken(token);
+
+        const tokens = await AuthenticationsTableTestHelper.findToken(token);
+        expect(tokens).toHaveLength(0);
+      });
     });
   });
 });

@@ -16,6 +16,7 @@ describe('a ReplyDetail entity', () => {
   it('should throw error when payload did not meet data type specification', () => {
     const payload = {
       id: 123,
+      commentId: 'comment-123',
       content: {},
       date: 2023,
       username: 'nicolauzp',
@@ -27,17 +28,20 @@ describe('a ReplyDetail entity', () => {
     );
   });
 
-  it('should create replyDetail object properly', () => {
+  it('should create replyDetail entities correctly', () => {
     const payload = {
       id: 'reply-123',
+      commentId: 'comment-123',
       content: 'A Thread',
       date: '2023',
       username: 'nicolauzp',
       isDelete: false,
     };
 
-    const { id, content, date, username, isDelete } = new ReplyDetail(payload);
+    const { id, commentId, content, date, username, isDelete } =
+      new ReplyDetail(payload);
     expect(id).toEqual(payload.id);
+    expect(commentId).toEqual(payload.commentId);
     expect(content).toEqual(payload.content);
     expect(date).toEqual(payload.date);
     expect(username).toEqual(payload.username);
