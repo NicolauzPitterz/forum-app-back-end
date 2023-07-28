@@ -71,8 +71,24 @@ describe('ReplyRepositoryPostgres', () => {
 
         const addedReply = await replyRepositoryPostgres.addReply(newReply);
 
-        const reply = await RepliesTableTestHelper.findReplyById(addedReply.id);
-        expect(reply).toBeDefined();
+        const { id, commentId, content, owner, date, isDelete } =
+          await RepliesTableTestHelper.findReplyById(addedReply.id);
+
+        const expectedReply = {
+          id: 'reply-123',
+          commentId: 'comment-123',
+          content: 'A Comment Reply',
+          owner: 'user-123',
+          date,
+          isDelete: false,
+        };
+
+        expect(id).toEqual(expectedReply.id);
+        expect(commentId).toEqual(expectedReply.commentId);
+        expect(content).toEqual(expectedReply.content);
+        expect(owner).toEqual(expectedReply.owner);
+        expect(date).toEqual(expectedReply.date);
+        expect(isDelete).toEqual(expectedReply.isDelete);
         expect(addedReply).toStrictEqual(
           new AddedReply({
             id: 'reply-123',

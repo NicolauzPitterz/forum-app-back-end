@@ -51,10 +51,22 @@ describe('ThreadRepositoryPostgres', () => {
 
         const addedThread = await threadRepositoryPostgres.addThread(newThread);
 
-        const threads = await ThreadsTableTestHelper.findThreadById(
-          addedThread.id,
-        );
-        expect(threads).toBeDefined();
+        const { id, title, body, owner, date } =
+          await ThreadsTableTestHelper.findThreadById(addedThread.id);
+
+        const expectedThread = {
+          id: 'thread-123',
+          title: 'A Thread',
+          body: 'A Thread Body',
+          owner: 'user-123',
+          date,
+        };
+
+        expect(id).toEqual(expectedThread.id);
+        expect(title).toEqual(expectedThread.title);
+        expect(body).toEqual(expectedThread.body);
+        expect(owner).toEqual(expectedThread.owner);
+        expect(date).toEqual(expectedThread.date);
         expect(addedThread).toStrictEqual(
           new AddedThread({
             id: 'thread-123',

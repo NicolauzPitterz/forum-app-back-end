@@ -65,10 +65,24 @@ describe('CommentRepositoryPostgres', () => {
           newComment,
         );
 
-        const comments = await CommentsTableTestHelper.findCommentById(
-          addedComment.id,
-        );
-        expect(comments).toBeDefined();
+        const { id, threadId, content, owner, date, isDelete } =
+          await CommentsTableTestHelper.findCommentById(addedComment.id);
+
+        const expectedComment = {
+          id: 'comment-123',
+          threadId: 'thread-123',
+          content: 'A Thread Comment',
+          owner: 'user-123',
+          date,
+          isDelete: false,
+        };
+
+        expect(id).toEqual(expectedComment.id);
+        expect(threadId).toEqual(expectedComment.threadId);
+        expect(content).toEqual(expectedComment.content);
+        expect(owner).toEqual(expectedComment.owner);
+        expect(date).toEqual(expectedComment.date);
+        expect(isDelete).toEqual(expectedComment.isDelete);
         expect(addedComment).toStrictEqual(
           new AddedComment({
             id: 'comment-123',
