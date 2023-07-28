@@ -7,7 +7,7 @@ class DeleteReplyUseCase {
 
   async execute(useCaseParam) {
     const { threadId, commentId, replyId, owner } = useCaseParam;
-    await this.threadRepository.getThreadDetailById(threadId);
+    await this.threadRepository.checkAvailabilityThread(threadId);
     await this.commentRepository.verifyComment(threadId, commentId);
     await this.replyRepository.verifyReply(commentId, replyId);
     await this.replyRepository.verifyReplyOwner(replyId, owner);

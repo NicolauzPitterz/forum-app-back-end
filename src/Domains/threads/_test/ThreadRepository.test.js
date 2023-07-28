@@ -8,6 +8,9 @@ describe('ThreadRepository interface', () => {
     await expect(threadRepository.addThread({})).rejects.toThrowError(
       errorMessage,
     );
+    await expect(
+      threadRepository.checkAvailabilityThread(''),
+    ).rejects.toThrowError(errorMessage);
     await expect(threadRepository.getThreadDetailById('')).rejects.toThrowError(
       errorMessage,
     );

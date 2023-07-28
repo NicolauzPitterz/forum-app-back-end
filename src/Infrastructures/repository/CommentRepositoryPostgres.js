@@ -1,5 +1,9 @@
 const { NotFoundError, AuthorizationError } = require('../../Commons');
-const { CommentRepository, AddedComment } = require('../../Domains');
+const {
+  CommentRepository,
+  AddedComment,
+  CommentDetail,
+} = require('../../Domains');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -39,18 +43,14 @@ class CommentRepositoryPostgres extends CommentRepository {
 
   async verifyComment(threadId, commentId) {
     const query = {
-      text: `SELECT * FROM comments c WHERE c."threadId" = $1 AND c.id = $2`,
-      values: [threadId, commentId],
+      text: `SELECT * FROM comments WHERE id = $1 AND "threadId" = $2`,
+      values: [commentId, threadId],
     };
 
-    const { rows, rowCount } = await this.pool.query(query);
+    const { rowCount } = await this.pool.query(query);
 
     if (!rowCount) {
       throw new NotFoundError('comment yang Anda cari tidak ada');
-    }
-
-    if (rows[0].isDelete === true) {
-      throw new NotFoundError('comment sudah dihapus sebelumnya');
     }
   }
 
@@ -77,7 +77,13 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const { rows } = await this.pool.query(query);
 
-    return rows;
+    return rows.map(
+      (comment) =>
+        new CommentDetail({
+          ...comment,
+          replies: [],
+        }),
+    );
   }
 }
 

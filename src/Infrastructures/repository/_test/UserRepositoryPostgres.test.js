@@ -92,12 +92,13 @@ describe('UserRepositoryPostgres', () => {
         const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
 
         return expect(
-          userRepositoryPostgres.getPasswordByUsername('dicoding'),
+          userRepositoryPostgres.getPasswordByUsername('nicolauzp'),
         ).rejects.toThrowError(InvariantError);
       });
 
       it('should return username password when user is found', async () => {
         const userRepositoryPostgres = new UserRepositoryPostgres(pool, {});
+
         await UsersTableTestHelper.addUser({
           username: 'nicolauzp',
           password: 'secret',

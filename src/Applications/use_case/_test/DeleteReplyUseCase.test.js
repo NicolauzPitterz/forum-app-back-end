@@ -18,7 +18,7 @@ describe('DeleteCommentUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockReplyRepository = new ReplyRepository();
 
-    mockThreadRepository.getThreadDetailById = jest
+    mockThreadRepository.checkAvailabilityThread = jest
       .fn()
       .mockImplementation(() => Promise.resolve());
     mockCommentRepository.verifyComment = jest
@@ -42,7 +42,7 @@ describe('DeleteCommentUseCase', () => {
 
     await deleteReplyUseCase.execute(useCaseParam);
 
-    expect(mockThreadRepository.getThreadDetailById).toBeCalledWith(
+    expect(mockThreadRepository.checkAvailabilityThread).toBeCalledWith(
       useCaseParam.threadId,
     );
     expect(mockCommentRepository.verifyComment).toBeCalledWith(

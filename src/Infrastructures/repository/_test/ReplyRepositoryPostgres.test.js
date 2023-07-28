@@ -1,5 +1,5 @@
 const { pool, ReplyRepositoryPostgres } = require('../..');
-const { NotFoundError } = require('../../../Commons');
+const { NotFoundError, AuthorizationError } = require('../../../Commons');
 const {
   AddReply,
   AddedReply,
@@ -27,6 +27,7 @@ describe('ReplyRepositoryPostgres', () => {
         threadId: 'thread-123',
         commentId: 'comment-123',
       };
+
       await UsersTableTestHelper.addUser({
         id: payload.userId,
         username: 'nicolauzp',
@@ -71,7 +72,6 @@ describe('ReplyRepositoryPostgres', () => {
         const addedReply = await replyRepositoryPostgres.addReply(newReply);
 
         const reply = await RepliesTableTestHelper.findReplyById(addedReply.id);
-
         expect(reply).toBeDefined();
         expect(addedReply).toStrictEqual(
           new AddedReply({
@@ -107,7 +107,6 @@ describe('ReplyRepositoryPostgres', () => {
         await replyRepositoryPostgres.deleteReplyById(replyId);
 
         const reply = await RepliesTableTestHelper.findReplyById(replyId);
-
         expect(reply.isDelete).toEqual(true);
       });
     });
@@ -130,7 +129,7 @@ describe('ReplyRepositoryPostgres', () => {
             payload.commentId,
             payload.replyId,
           ),
-        ).resolves.not.toThrowError();
+        ).resolves.not.toThrow(NotFoundError);
       });
 
       it('should reject if reply does not exist', async () => {
@@ -146,28 +145,7 @@ describe('ReplyRepositoryPostgres', () => {
             payload.commentId,
             payload.replyId,
           ),
-        ).rejects.toThrowError('reply yang Anda cari tidak ada');
-      });
-
-      it('should reject if comment is already deleted', async () => {
-        const payload = {
-          commentId: 'comment-123',
-          replyId: 'reply-123',
-        };
-
-        await RepliesTableTestHelper.addReply({
-          id: payload.replyId,
-          isDelete: true,
-        });
-
-        const replyRepositoryPostgres = new ReplyRepositoryPostgres(pool, {});
-
-        await expect(
-          replyRepositoryPostgres.verifyReply(
-            payload.commentId,
-            payload.replyId,
-          ),
-        ).rejects.toThrowError('reply sudah dihapus sebelumnya');
+        ).rejects.toThrowError(NotFoundError);
       });
     });
 
@@ -197,9 +175,7 @@ describe('ReplyRepositoryPostgres', () => {
 
         await expect(
           replyRepositoryPostgres.verifyReplyOwner('reply-123', 'user-321'),
-        ).rejects.toThrowError(
-          'proses gagal karena Anda tidak mempunyai akses ke aksi ini',
-        );
+        ).rejects.toThrowError(AuthorizationError);
       });
     });
 
@@ -219,7 +195,7 @@ describe('ReplyRepositoryPostgres', () => {
             commentId: 'comment-123',
             content: 'A Comment Reply B',
             date: '2023',
-            username: 'pittersn',
+            username: 'nicolauzp',
             isDelete: false,
           },
         ];
@@ -231,23 +207,14 @@ describe('ReplyRepositoryPostgres', () => {
 
         const repliesDetail =
           await replyRepositoryPostgres.getRepliesByThreadId('thread-123');
-
         expect(repliesDetail).toEqual([
           new ReplyDetail({
-            id: 'reply-123',
-            commentId: 'comment-123',
-            content: 'A Comment Reply A',
+            ...replies[0],
             date: repliesDetail[0].date,
-            username: repliesDetail[0].username,
-            isDelete: false,
           }),
           new ReplyDetail({
-            id: 'reply-456',
-            commentId: 'comment-123',
-            content: 'A Comment Reply B',
+            ...replies[1],
             date: repliesDetail[1].date,
-            username: repliesDetail[1].username,
-            isDelete: false,
           }),
         ]);
       });

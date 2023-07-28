@@ -1,5 +1,5 @@
 const { NotFoundError, AuthorizationError } = require('../../Commons');
-const { ReplyRepository, AddedReply } = require('../../Domains');
+const { ReplyRepository, AddedReply, ReplyDetail } = require('../../Domains');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -39,18 +39,14 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
   async verifyReply(commentId, replyId) {
     const query = {
-      text: `SELECT * FROM replies r WHERE r."commentId" = $1 AND r.id = $2`,
-      values: [commentId, replyId],
+      text: `SELECT * FROM replies WHERE id = $1 AND "commentId" = $2`,
+      values: [replyId, commentId],
     };
 
-    const { rows, rowCount } = await this.pool.query(query);
+    const { rowCount } = await this.pool.query(query);
 
     if (!rowCount) {
       throw new NotFoundError('reply yang Anda cari tidak ada');
-    }
-
-    if (rows[0].isDelete === true) {
-      throw new NotFoundError('reply sudah dihapus sebelumnya');
     }
   }
 
@@ -80,7 +76,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const { rows } = await this.pool.query(query);
 
-    return rows;
+    return rows.map((reply) => new ReplyDetail(reply));
   }
 }
 

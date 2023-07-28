@@ -9,6 +9,10 @@ class ThreadRepository {
     throw new Error(this.errorMessage);
   }
 
+  async checkAvailabilityThread(id) {
+    throw new Error(this.errorMessage);
+  }
+
   async getThreadDetailById(id) {
     throw new Error(this.errorMessage);
   }

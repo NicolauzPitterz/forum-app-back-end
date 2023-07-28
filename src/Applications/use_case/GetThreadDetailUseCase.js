@@ -13,12 +13,16 @@ class getThreadUseCase {
     threadDetail.comments = await this.commentRepository.getCommentsByThreadId(
       threadId,
     );
-    const replies = await this.replyRepository.getRepliesByThreadId(threadId);
     threadDetail.comments = this.verifyIsDeletedComments(threadDetail.comments);
+
+    const replies = await this.replyRepository.getRepliesByThreadId(threadId);
+    const filteredReplies = this.verifyIsDeletedReplies(replies);
+
     threadDetail.comments = this.getCommentReplies(
       threadDetail.comments,
-      replies,
+      filteredReplies,
     );
+
     return threadDetail;
   }
 
@@ -33,7 +37,7 @@ class getThreadUseCase {
     return filteredCommentsDetail;
   }
 
-  getCommentReplies(comments, replies) {
+  verifyIsDeletedReplies(replies) {
     const filteredRepliesDetail = replies.map(
       ({ isDelete, content, ...repliesDetail }) => ({
         ...repliesDetail,
@@ -41,12 +45,14 @@ class getThreadUseCase {
       }),
     );
 
+    return filteredRepliesDetail;
+  }
+
+  getCommentReplies(comments, replies) {
     return comments.map(({ id, isDelete, content, ...commentDetail }) => ({
       id,
       ...commentDetail,
-      replies: filteredRepliesDetail.filter(
-        ({ commentId }) => commentId === id,
-      ),
+      replies: replies.filter(({ commentId }) => commentId === id),
       content,
     }));
   }

@@ -1,5 +1,5 @@
 const { pool, CommentRepositoryPostgres } = require('../..');
-const { NotFoundError } = require('../../../Commons');
+const { NotFoundError, AuthorizationError } = require('../../../Commons');
 const {
   AddComment,
   AddedComment,
@@ -25,6 +25,7 @@ describe('CommentRepositoryPostgres', () => {
         userId: 'user-123',
         threadId: 'thread-123',
       };
+
       await UsersTableTestHelper.addUser({
         id: payload.userId,
         username: 'nicolauzp',
@@ -135,7 +136,7 @@ describe('CommentRepositoryPostgres', () => {
             payload.threadId,
             payload.commentId,
           ),
-        ).resolves.not.toThrowError();
+        ).resolves.not.toThrow(NotFoundError);
       });
 
       it('should reject if comment does not exist', async () => {
@@ -154,31 +155,7 @@ describe('CommentRepositoryPostgres', () => {
             payload.threadId,
             payload.commentId,
           ),
-        ).rejects.toThrowError('comment yang Anda cari tidak ada');
-      });
-
-      it('should reject if comment is already deleted', async () => {
-        const payload = {
-          threadId: 'thread-123',
-          commentId: 'comment-123',
-        };
-
-        await CommentsTableTestHelper.addComment({
-          id: payload.commentId,
-          isDelete: true,
-        });
-
-        const commentRepositoryPostgres = new CommentRepositoryPostgres(
-          pool,
-          {},
-        );
-
-        await expect(
-          commentRepositoryPostgres.verifyComment(
-            payload.threadId,
-            payload.commentId,
-          ),
-        ).rejects.toThrowError('comment sudah dihapus sebelumnya');
+        ).rejects.toThrowError(NotFoundError);
       });
     });
 
@@ -220,9 +197,7 @@ describe('CommentRepositoryPostgres', () => {
             'comment-123',
             'user-321',
           ),
-        ).rejects.toThrowError(
-          'proses gagal karena Anda tidak mempunyai akses ke aksi ini',
-        );
+        ).rejects.toThrowError(AuthorizationError);
       });
     });
 
@@ -233,14 +208,16 @@ describe('CommentRepositoryPostgres', () => {
             id: 'comment-123',
             username: 'nicolauzp',
             date: '2023',
-            content: 'A Thread A',
+            replies: [],
+            content: 'A Thread Comment A',
             isDelete: false,
           },
           {
             id: 'comment-456',
-            username: 'pittersn',
+            username: 'nicolauzp',
             date: '2023',
-            content: 'A Thread B',
+            replies: [],
+            content: 'A Thread Comment B',
             isDelete: false,
           },
         ];
@@ -255,21 +232,14 @@ describe('CommentRepositoryPostgres', () => {
 
         const commentsDetail =
           await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
-
         expect(commentsDetail).toEqual([
           new CommentDetail({
-            id: 'comment-123',
-            username: commentsDetail[0].username,
+            ...comments[0],
             date: commentsDetail[0].date,
-            content: 'A Thread A',
-            isDelete: false,
           }),
           new CommentDetail({
-            id: 'comment-456',
-            username: commentsDetail[1].username,
+            ...comments[1],
             date: commentsDetail[1].date,
-            content: 'A Thread B',
-            isDelete: false,
           }),
         ]);
       });
