@@ -1,9 +1,5 @@
 const { NotFoundError, AuthorizationError } = require('../../Commons');
-const {
-  CommentRepository,
-  AddedComment,
-  CommentDetail,
-} = require('../../Domains');
+const { CommentRepository, AddedComment } = require('../../Domains');
 
 class CommentRepositoryPostgres extends CommentRepository {
   constructor(pool, idGenerator) {
@@ -77,13 +73,7 @@ class CommentRepositoryPostgres extends CommentRepository {
 
     const { rows } = await this.pool.query(query);
 
-    return rows.map(
-      (comment) =>
-        new CommentDetail({
-          ...comment,
-          replies: [],
-        }),
-    );
+    return rows;
   }
 }
 

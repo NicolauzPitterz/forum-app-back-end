@@ -3,7 +3,6 @@ const { NotFoundError, AuthorizationError } = require('../../../Commons');
 const {
   AddComment,
   AddedComment,
-  CommentDetail,
   CommentRepository,
 } = require('../../../Domains');
 const {
@@ -222,7 +221,6 @@ describe('CommentRepositoryPostgres', () => {
             id: 'comment-123',
             username: 'nicolauzp',
             date: '2023',
-            replies: [],
             content: 'A Thread Comment A',
             isDelete: false,
           },
@@ -230,7 +228,6 @@ describe('CommentRepositoryPostgres', () => {
             id: 'comment-456',
             username: 'nicolauzp',
             date: '2023',
-            replies: [],
             content: 'A Thread Comment B',
             isDelete: false,
           },
@@ -247,14 +244,14 @@ describe('CommentRepositoryPostgres', () => {
         const commentsDetail =
           await commentRepositoryPostgres.getCommentsByThreadId('thread-123');
         expect(commentsDetail).toEqual([
-          new CommentDetail({
+          {
             ...comments[0],
             date: commentsDetail[0].date,
-          }),
-          new CommentDetail({
+          },
+          {
             ...comments[1],
             date: commentsDetail[1].date,
-          }),
+          },
         ]);
       });
 

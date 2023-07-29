@@ -1,11 +1,6 @@
 const { pool, ReplyRepositoryPostgres } = require('../..');
 const { NotFoundError, AuthorizationError } = require('../../../Commons');
-const {
-  AddReply,
-  AddedReply,
-  ReplyDetail,
-  ReplyRepository,
-} = require('../../../Domains');
+const { AddReply, AddedReply, ReplyRepository } = require('../../../Domains');
 const {
   UsersTableTestHelper,
   CommentsTableTestHelper,
@@ -224,14 +219,14 @@ describe('ReplyRepositoryPostgres', () => {
         const repliesDetail =
           await replyRepositoryPostgres.getRepliesByThreadId('thread-123');
         expect(repliesDetail).toEqual([
-          new ReplyDetail({
+          {
             ...replies[0],
             date: repliesDetail[0].date,
-          }),
-          new ReplyDetail({
+          },
+          {
             ...replies[1],
             date: repliesDetail[1].date,
-          }),
+          },
         ]);
       });
 

@@ -1,5 +1,5 @@
 const { NotFoundError, AuthorizationError } = require('../../Commons');
-const { ReplyRepository, AddedReply, ReplyDetail } = require('../../Domains');
+const { ReplyRepository, AddedReply } = require('../../Domains');
 
 class ReplyRepositoryPostgres extends ReplyRepository {
   constructor(pool, idGenerator) {
@@ -76,7 +76,7 @@ class ReplyRepositoryPostgres extends ReplyRepository {
 
     const { rows } = await this.pool.query(query);
 
-    return rows.map((reply) => new ReplyDetail(reply));
+    return rows;
   }
 }
 

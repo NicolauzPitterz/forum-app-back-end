@@ -4,7 +4,6 @@ const {
   AddThread,
   AddedThread,
   ThreadRepository,
-  ThreadDetail,
 } = require('../../../Domains');
 const {
   ThreadsTableTestHelper,
@@ -129,14 +128,6 @@ describe('ThreadRepositoryPostgres', () => {
 
         const userId = 'user-123';
         const threadId = 'thread-123';
-        const expectedThread = new ThreadDetail({
-          id: 'thread-123',
-          title: 'A Thread',
-          body: 'A Thread Body',
-          date: '2023',
-          username: 'nicolauzp',
-          comments: [],
-        });
 
         await UsersTableTestHelper.addUser({
           id: userId,
@@ -149,12 +140,13 @@ describe('ThreadRepositoryPostgres', () => {
         const returnedThread =
           await threadRepositoryPostgres.getThreadDetailById(threadId);
 
-        expect(returnedThread).toStrictEqual(
-          new ThreadDetail({
-            ...expectedThread,
-            date: returnedThread.date,
-          }),
-        );
+        expect(returnedThread).toStrictEqual({
+          id: 'thread-123',
+          title: 'A Thread',
+          body: 'A Thread Body',
+          date: returnedThread.date,
+          username: 'nicolauzp',
+        });
       });
     });
   });

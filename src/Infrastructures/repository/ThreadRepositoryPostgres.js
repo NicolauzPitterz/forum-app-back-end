@@ -1,9 +1,5 @@
 const { NotFoundError } = require('../../Commons');
-const {
-  ThreadRepository,
-  AddedThread,
-  ThreadDetail,
-} = require('../../Domains');
+const { ThreadRepository, AddedThread } = require('../../Domains');
 
 class ThreadRepositoryPostgres extends ThreadRepository {
   constructor(pool, idGenerator) {
@@ -50,7 +46,7 @@ class ThreadRepositoryPostgres extends ThreadRepository {
       throw new NotFoundError('thread tidak ditemukan');
     }
 
-    return new ThreadDetail({ ...rows[0], comments: [] });
+    return rows[0];
   }
 }
 

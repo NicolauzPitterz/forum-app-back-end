@@ -1,3 +1,5 @@
+const { ThreadDetail } = require('../../../Domains');
+
 class getThreadUseCase {
   constructor({ threadRepository, commentRepository, replyRepository }) {
     this.threadRepository = threadRepository;
@@ -7,23 +9,17 @@ class getThreadUseCase {
 
   async execute(useCaseParam) {
     const { threadId } = useCaseParam;
-    const threadDetail = await this.threadRepository.getThreadDetailById(
+    const thread = await this.threadRepository.getThreadDetailById(threadId);
+    const comments = await this.commentRepository.getCommentsByThreadId(
       threadId,
     );
-    threadDetail.comments = await this.commentRepository.getCommentsByThreadId(
-      threadId,
-    );
-    threadDetail.comments = this.verifyIsDeletedComments(threadDetail.comments);
-
+    const filteredComments = this.verifyIsDeletedComments(comments);
     const replies = await this.replyRepository.getRepliesByThreadId(threadId);
     const filteredReplies = this.verifyIsDeletedReplies(replies);
 
-    threadDetail.comments = this.getCommentReplies(
-      threadDetail.comments,
-      filteredReplies,
-    );
+    thread.comments = this.getCommentReplies(filteredComments, filteredReplies);
 
-    return threadDetail;
+    return new ThreadDetail(thread);
   }
 
   verifyIsDeletedComments(comments) {
