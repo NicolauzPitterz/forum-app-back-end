@@ -3,30 +3,34 @@
 const AuthenticationTokenManager = require('./security/AuthenticationTokenManager');
 const PasswordHash = require('./security/PasswordHash');
 
-const AddCommentUseCase = require('./use_case/AddCommentUseCase');
-const AddReplyUseCase = require('./use_case/AddReplyUseCase');
-const AddThreadUseCase = require('./use_case/AddThreadUseCase');
-const AddUserUseCase = require('./use_case/AddUserUseCase');
-const DeleteAuthenticationUseCase = require('./use_case/DeleteAuthenticationUseCase');
-const DeleteCommentUseCase = require('./use_case/DeleteCommentUseCase');
-const DeleteReplyUseCase = require('./use_case/DeleteReplyUseCase');
-const GetThreadDetailUseCase = require('./use_case/GetThreadDetailUseCase');
-const LoginUserUseCase = require('./use_case/LoginUserUseCase');
-const LogoutUserUseCase = require('./use_case/LogoutUserUseCase');
-const RefreshAuthenticationUseCase = require('./use_case/RefreshAuthenticationUseCase');
+const AddUserUseCase = require('./use_case/users/AddUserUseCase');
+
+const DeleteAuthenticationUseCase = require('./use_case/authentications/DeleteAuthenticationUseCase');
+const LoginUserUseCase = require('./use_case/authentications/LoginUserUseCase');
+const LogoutUserUseCase = require('./use_case/authentications/LogoutUserUseCase');
+const RefreshAuthenticationUseCase = require('./use_case/authentications/RefreshAuthenticationUseCase');
+
+const AddThreadUseCase = require('./use_case/threads/AddThreadUseCase');
+const GetThreadDetailUseCase = require('./use_case/threads/GetThreadDetailUseCase');
+
+const AddCommentUseCase = require('./use_case/comments/AddCommentUseCase');
+const DeleteCommentUseCase = require('./use_case/comments/DeleteCommentUseCase');
+
+const AddReplyUseCase = require('./use_case/reply/AddReplyUseCase');
+const DeleteReplyUseCase = require('./use_case/reply/DeleteReplyUseCase');
 
 module.exports = {
   AuthenticationTokenManager,
   PasswordHash,
-  AddCommentUseCase,
-  AddReplyUseCase,
-  AddThreadUseCase,
   AddUserUseCase,
   DeleteAuthenticationUseCase,
-  DeleteCommentUseCase,
-  DeleteReplyUseCase,
-  GetThreadDetailUseCase,
   LoginUserUseCase,
   LogoutUserUseCase,
   RefreshAuthenticationUseCase,
+  AddThreadUseCase,
+  GetThreadDetailUseCase,
+  AddCommentUseCase,
+  DeleteCommentUseCase,
+  AddReplyUseCase,
+  DeleteReplyUseCase,
 };

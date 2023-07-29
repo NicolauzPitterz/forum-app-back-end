@@ -3,7 +3,7 @@ const {
   AddThread,
   AddedThread,
   ThreadRepository,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('AddThreadUseCase', () => {
   it('should orchestrating the add thread action correctly', async () => {

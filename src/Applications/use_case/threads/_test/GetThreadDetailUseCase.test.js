@@ -6,7 +6,7 @@ const {
   CommentDetail,
   ReplyDetail,
   ReplyRepository,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('GetThreadDetailUseCase', () => {
   it('should orchestrating the get thread detail action correctly', async () => {

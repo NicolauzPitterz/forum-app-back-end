@@ -4,7 +4,7 @@ const {
   CommentRepository,
   AddComment,
   ThreadRepository,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('AddCommentUseCase', () => {
   it('should orchestrating the add comment action correctly', async () => {

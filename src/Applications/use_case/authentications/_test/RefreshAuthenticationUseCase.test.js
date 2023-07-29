@@ -1,8 +1,8 @@
 const {
   AuthenticationTokenManager,
   RefreshAuthenticationUseCase,
-} = require('../..');
-const { AuthenticationRepository } = require('../../../Domains');
+} = require('../../..');
+const { AuthenticationRepository } = require('../../../../Domains');
 
 describe('RefreshAuthenticationUseCase', () => {
   it('should throw error if use case payload not contain refresh token', async () => {

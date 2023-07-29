@@ -5,7 +5,7 @@ const {
   AddedReply,
   ReplyRepository,
   AddReply,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('AddReplyUseCase', () => {
   it('should orchestrating the add reply action correctly', async () => {

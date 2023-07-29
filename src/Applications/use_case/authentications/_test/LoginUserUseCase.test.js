@@ -2,12 +2,12 @@ const {
   AuthenticationTokenManager,
   PasswordHash,
   LoginUserUseCase,
-} = require('../..');
+} = require('../../..');
 const {
   UserRepository,
   AuthenticationRepository,
   NewAuth,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('GetAuthenticationUseCase', () => {
   it('should orchestrating the get authentication action correctly', async () => {

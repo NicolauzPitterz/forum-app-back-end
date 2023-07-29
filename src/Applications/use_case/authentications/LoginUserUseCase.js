@@ -1,4 +1,4 @@
-const { UserLogin, NewAuth: NewAuthentication } = require('../../Domains');
+const { UserLogin, NewAuth: NewAuthentication } = require('../../../Domains');
 
 class LoginUserUseCase {
   constructor({

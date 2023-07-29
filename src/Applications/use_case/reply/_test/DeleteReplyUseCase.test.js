@@ -3,7 +3,7 @@ const {
   CommentRepository,
   ThreadRepository,
   ReplyRepository,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('DeleteCommentUseCase', () => {
   it('should orchestrating the delete comment action correctly', async () => {

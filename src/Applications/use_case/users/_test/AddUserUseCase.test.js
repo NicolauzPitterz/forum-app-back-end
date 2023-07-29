@@ -1,9 +1,9 @@
-const { PasswordHash, AddUserUseCase } = require('../..');
+const { PasswordHash, AddUserUseCase } = require('../../..');
 const {
   RegisterUser,
   RegisteredUser,
   UserRepository,
-} = require('../../../Domains');
+} = require('../../../../Domains');
 
 describe('AddUserUseCase', () => {
   it('should orchestrating the add user action correctly', async () => {

@@ -23,6 +23,9 @@ const AddedReply = require('./replies/entities/AddedReply');
 const ReplyDetail = require('./replies/entities/ReplyDetail');
 const ReplyRepository = require('./replies/ReplyRepository');
 
+const AddLike = require('./likes/entities/AddLike');
+const LikeRepository = require('./likes/LikeRepository');
+
 module.exports = {
   RegisterUser,
   RegisteredUser,
@@ -42,4 +45,6 @@ module.exports = {
   AddedReply,
   ReplyDetail,
   ReplyRepository,
+  AddLike,
+  LikeRepository,
 };
