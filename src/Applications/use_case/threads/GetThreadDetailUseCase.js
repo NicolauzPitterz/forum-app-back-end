@@ -1,4 +1,8 @@
-const { ThreadDetail } = require('../../../Domains');
+const {
+  ThreadDetail,
+  CommentDetail,
+  ReplyDetail,
+} = require('../../../Domains');
 
 class getThreadUseCase {
   constructor({ threadRepository, commentRepository, replyRepository }) {
@@ -13,9 +17,15 @@ class getThreadUseCase {
     const comments = await this.commentRepository.getCommentsByThreadId(
       threadId,
     );
-    const filteredComments = this.verifyIsDeletedComments(comments);
+    const filteredComments = this.verifyIsDeletedComments(
+      comments.map(
+        ({ ...comment }) => new CommentDetail({ ...comment, replies: [] }),
+      ),
+    );
     const replies = await this.replyRepository.getRepliesByThreadId(threadId);
-    const filteredReplies = this.verifyIsDeletedReplies(replies);
+    const filteredReplies = this.verifyIsDeletedReplies(
+      replies.map((reply) => new ReplyDetail(reply)),
+    );
 
     thread.comments = this.getCommentReplies(filteredComments, filteredReplies);
 

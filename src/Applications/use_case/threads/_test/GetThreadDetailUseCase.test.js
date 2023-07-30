@@ -68,59 +68,54 @@ describe('GetThreadDetailUseCase', () => {
     mockThreadRepository.getThreadDetailById = jest
       .fn()
       .mockImplementation(() =>
-        Promise.resolve(
-          new ThreadDetail({
-            id: 'thread-123',
-            title: 'A Thread',
-            body: 'A Thread Body',
-            date: '2023',
-            username: 'nicolauzp',
-            comments: [],
-          }),
-        ),
+        Promise.resolve({
+          id: 'thread-123',
+          title: 'A Thread',
+          body: 'A Thread Body',
+          date: '2023',
+          username: 'nicolauzp',
+        }),
       );
     mockCommentRepository.getCommentsByThreadId = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve([
-          new CommentDetail({
+          {
             id: 'comment-123',
             username: 'nicolauzp',
             date: '2023',
-            replies: [],
             content: 'A Thread Comment A',
             isDelete: false,
-          }),
-          new CommentDetail({
+          },
+          {
             id: 'comment-456',
             username: 'pittersn',
             date: '2023',
-            replies: [],
             content: 'A Thread Comment B',
             isDelete: false,
-          }),
+          },
         ]),
       );
     mockReplyRepository.getRepliesByThreadId = jest
       .fn()
       .mockImplementation(() =>
         Promise.resolve([
-          new ReplyDetail({
+          {
             id: 'reply-123',
             commentId: 'comment-123',
             content: 'A Comment Reply A',
             date: '2023',
             username: 'nicolauzp',
             isDelete: false,
-          }),
-          new ReplyDetail({
+          },
+          {
             id: 'reply-456',
             commentId: 'comment-123',
             content: 'A Comment Reply B',
             date: '2023',
             username: 'pittersn',
             isDelete: false,
-          }),
+          },
         ]),
       );
 
