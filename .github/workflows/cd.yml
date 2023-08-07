@@ -22,9 +22,6 @@ jobs:
             git pull origin main
             export NVM_DIR=~/.nvm
             source ~/.nvm/nvm.sh
-            nvm install --lts
-            node -v
-            npm -v
             npm install
             npm run migrate up
             pm2 restart forum-api
