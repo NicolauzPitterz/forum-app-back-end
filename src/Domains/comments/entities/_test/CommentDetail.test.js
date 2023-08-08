@@ -20,6 +20,7 @@ describe('a CommentDetail entity', () => {
       date: 2023,
       replies: [],
       content: {},
+      likeCount: 0,
       isDelete: 'false',
     };
 
@@ -35,10 +36,11 @@ describe('a CommentDetail entity', () => {
       date: '2023',
       replies: [],
       content: 'A Thread Comment',
+      likeCount: 0,
       isDelete: false,
     };
 
-    const { id, username, date, replies, content, isDelete } =
+    const { id, username, date, replies, content, likeCount, isDelete } =
       new CommentDetail(payload);
 
     expect(id).toEqual(payload.id);
@@ -46,6 +48,7 @@ describe('a CommentDetail entity', () => {
     expect(date).toEqual(payload.date);
     expect(replies).toEqual(payload.replies);
     expect(content).toEqual(payload.content);
+    expect(likeCount).toEqual(payload.likeCount);
     expect(isDelete).toEqual(payload.isDelete);
   });
 });
