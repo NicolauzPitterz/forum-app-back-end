@@ -9,6 +9,7 @@ const {
   threads,
   comments,
   replies,
+  likes,
 } = require('../../Interfaces');
 
 const createServer = async (container) => {
@@ -63,6 +64,10 @@ const createServer = async (container) => {
     },
     {
       plugin: replies,
+      options: { container },
+    },
+    {
+      plugin: likes,
       options: { container },
     },
   ]);

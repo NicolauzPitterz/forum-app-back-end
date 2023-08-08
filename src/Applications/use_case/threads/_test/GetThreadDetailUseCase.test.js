@@ -6,6 +6,10 @@ const {
   CommentDetail,
   ReplyDetail,
   ReplyRepository,
+  FilteredComments,
+  FilteredReplies,
+  CommentReplies,
+  LikeRepository,
 } = require('../../../../Domains');
 
 describe('GetThreadDetailUseCase', () => {
@@ -30,6 +34,7 @@ describe('GetThreadDetailUseCase', () => {
         date: '2023',
         replies: [],
         content: 'A Thread Comment A',
+        likeCount: 0,
         isDelete: false,
       }),
       new CommentDetail({
@@ -38,6 +43,7 @@ describe('GetThreadDetailUseCase', () => {
         date: '2023',
         replies: [],
         content: 'A Thread Comment B',
+        likeCount: 0,
         isDelete: false,
       }),
     ];
@@ -64,6 +70,7 @@ describe('GetThreadDetailUseCase', () => {
     const mockThreadRepository = new ThreadRepository();
     const mockCommentRepository = new CommentRepository();
     const mockReplyRepository = new ReplyRepository();
+    const mockLikeRepository = new LikeRepository();
 
     mockThreadRepository.getThreadDetailById = jest
       .fn()
@@ -85,6 +92,7 @@ describe('GetThreadDetailUseCase', () => {
             username: 'nicolauzp',
             date: '2023',
             content: 'A Thread Comment A',
+            likeCount: 2,
             isDelete: false,
           },
           {
@@ -92,10 +100,14 @@ describe('GetThreadDetailUseCase', () => {
             username: 'pittersn',
             date: '2023',
             content: 'A Thread Comment B',
+            likeCount: 1,
             isDelete: false,
           },
         ]),
       );
+    mockLikeRepository.getLikesByCommentId = jest
+      .fn()
+      .mockImplementation(() => Promise.resolve(0));
     mockReplyRepository.getRepliesByThreadId = jest
       .fn()
       .mockImplementation(() =>
@@ -123,6 +135,7 @@ describe('GetThreadDetailUseCase', () => {
       threadRepository: mockThreadRepository,
       commentRepository: mockCommentRepository,
       replyRepository: mockReplyRepository,
+      likeRepository: mockLikeRepository,
     });
 
     const filteredCommentsDetail = mockCommentsDetail.map(
@@ -136,17 +149,16 @@ describe('GetThreadDetailUseCase', () => {
       { ...filteredCommentsDetail[1], replies: [] },
     ];
 
-    getThreadDetailUseCase.verifyIsDeletedComments = jest
-      .fn()
-      .mockImplementation(() => filteredCommentsDetail);
-    getThreadDetailUseCase.verifyIsDeletedReplies = jest
-      .fn()
-      .mockImplementation(() => filteredRepliesDetail);
-    getThreadDetailUseCase.getCommentReplies = jest
-      .fn()
-      .mockImplementation(() => expectedCommentsAndReplies);
-
     const useCaseResult = await getThreadDetailUseCase.execute(useCaseParam);
+
+    const filteredComments =
+      FilteredComments.verifyIsDeletedComments(mockCommentsDetail);
+    const filteredReplies =
+      FilteredReplies.verifyIsDeletedReplies(mockRepliesDetail);
+    const commentReplies = CommentReplies.getCommentReplies(
+      filteredComments,
+      filteredReplies,
+    );
 
     expect(useCaseResult).toEqual(
       new ThreadDetail({
@@ -163,185 +175,8 @@ describe('GetThreadDetailUseCase', () => {
     expect(mockReplyRepository.getRepliesByThreadId).toBeCalledWith(
       useCaseParam.threadId,
     );
-    expect(getThreadDetailUseCase.verifyIsDeletedComments).toBeCalledWith(
-      mockCommentsDetail,
-    );
-    expect(getThreadDetailUseCase.verifyIsDeletedReplies).toBeCalledWith(
-      mockRepliesDetail,
-    );
-    expect(getThreadDetailUseCase.getCommentReplies).toBeCalledWith(
-      filteredCommentsDetail,
-      filteredRepliesDetail,
-    );
-  });
-
-  it('should operate the branching in the verifyIsDeletedComments function properly', () => {
-    const getThreadDetailUseCase = new GetThreadDetailUseCase({
-      threadRepository: {},
-      commentRepository: {},
-      replyRepository: {},
-    });
-
-    const mockCommentsDetail = [
-      new CommentDetail({
-        id: 'comment-123',
-        username: 'nicolauzp',
-        date: '2023',
-        replies: [],
-        content: 'A Thread Comment A',
-        isDelete: true,
-      }),
-      new CommentDetail({
-        id: 'comment-456',
-        username: 'pittersn',
-        date: '2023',
-        replies: [],
-        content: 'A Thread Comment B',
-        isDelete: false,
-      }),
-    ];
-
-    const filteredCommentsDetail = mockCommentsDetail.map(
-      ({ isDelete, ...commentDetail }) => commentDetail,
-    );
-
-    const SpyCheckIsDeletedComments = jest.spyOn(
-      getThreadDetailUseCase,
-      'verifyIsDeletedComments',
-    );
-
-    getThreadDetailUseCase.verifyIsDeletedComments(mockCommentsDetail);
-
-    expect(SpyCheckIsDeletedComments).toReturnWith([
-      { ...filteredCommentsDetail[0], content: '**komentar telah dihapus**' },
-      filteredCommentsDetail[1],
-    ]);
-
-    SpyCheckIsDeletedComments.mockClear();
-  });
-
-  it('should operate the branching in the verifyIsDeletedReplies function properly', () => {
-    const getThreadDetailUseCase = new GetThreadDetailUseCase({
-      threadRepository: {},
-      commentRepository: {},
-      replyRepository: {},
-    });
-
-    const mockRepliesDetail = [
-      new ReplyDetail({
-        id: 'reply-123',
-        commentId: 'comment-123',
-        content: 'A Comment Reply A',
-        date: '2023',
-        username: 'nicolauzp',
-        isDelete: true,
-      }),
-      new ReplyDetail({
-        id: 'reply-456',
-        commentId: 'comment-123',
-        content: 'A Comment Reply B',
-        date: '2023',
-        username: 'pittersn',
-        isDelete: false,
-      }),
-    ];
-
-    const filteredRepliesDetail = mockRepliesDetail.map(
-      ({ isDelete, ...replyDetail }) => replyDetail,
-    );
-
-    const SpyCheckIsDeletedReplies = jest.spyOn(
-      getThreadDetailUseCase,
-      'verifyIsDeletedReplies',
-    );
-
-    getThreadDetailUseCase.verifyIsDeletedReplies(mockRepliesDetail);
-
-    expect(SpyCheckIsDeletedReplies).toReturnWith([
-      { ...filteredRepliesDetail[0], content: '**balasan telah dihapus**' },
-      filteredRepliesDetail[1],
-    ]);
-
-    SpyCheckIsDeletedReplies.mockClear();
-  });
-
-  it('should operate the branching in the getCommentReplies function properly', () => {
-    const getThreadDetailUseCase = new GetThreadDetailUseCase({
-      threadRepository: {},
-      commentRepository: {},
-      replyRepository: {},
-    });
-
-    const mockCommentsDetail = [
-      new CommentDetail({
-        id: 'comment-123',
-        username: 'nicolauzp',
-        date: '2023',
-        replies: [],
-        content: 'A Thread Comment A',
-        isDelete: true,
-      }),
-      new CommentDetail({
-        id: 'comment-456',
-        username: 'pittersn',
-        date: '2023',
-        replies: [],
-        content: 'A Thread CommentB',
-        isDelete: false,
-      }),
-    ];
-
-    const mockRepliesDetail = [
-      new ReplyDetail({
-        id: 'reply-123',
-        commentId: 'comment-123',
-        content: 'A Comment Reply A',
-        date: '2023',
-        username: 'nicolauzp',
-        isDelete: true,
-      }),
-      new ReplyDetail({
-        id: 'reply-456',
-        commentId: 'comment-456',
-        content: 'A Comment Reply B',
-        date: '2023',
-        username: 'pittersn',
-        isDelete: false,
-      }),
-    ];
-
-    const filteredCommentsDetail = mockCommentsDetail.map(
-      ({ isDelete, content, ...commentDetail }) => ({
-        ...commentDetail,
-        content: isDelete ? '**komentar telah dihapus**' : content,
-      }),
-    );
-    const filteredRepliesDetail = mockRepliesDetail.map(
-      ({ isDelete, content, ...replyDetail }) => ({
-        ...replyDetail,
-        content: isDelete ? '**balasan telah dihapus**' : content,
-      }),
-    );
-    const expectedCommentsAndReplies = [
-      {
-        ...filteredCommentsDetail[0],
-        replies: [filteredRepliesDetail[0]],
-      },
-      { ...filteredCommentsDetail[1], replies: [filteredRepliesDetail[1]] },
-    ];
-
-    const SpyGetCommentReplies = jest.spyOn(
-      getThreadDetailUseCase,
-      'getCommentReplies',
-    );
-
-    getThreadDetailUseCase.getCommentReplies(
-      filteredCommentsDetail,
-      filteredRepliesDetail,
-    );
-
-    expect(SpyGetCommentReplies).toReturnWith(expectedCommentsAndReplies);
-
-    SpyGetCommentReplies.mockClear();
+    expect(filteredComments).toStrictEqual(filteredCommentsDetail);
+    expect(filteredReplies).toStrictEqual(filteredRepliesDetail);
+    expect(commentReplies).toStrictEqual(expectedCommentsAndReplies);
   });
 });

@@ -19,6 +19,8 @@ const DeleteCommentUseCase = require('./use_case/comments/DeleteCommentUseCase')
 const AddReplyUseCase = require('./use_case/reply/AddReplyUseCase');
 const DeleteReplyUseCase = require('./use_case/reply/DeleteReplyUseCase');
 
+const LikeCommentUseCase = require('./use_case/likes/LikeCommentUseCase');
+
 module.exports = {
   AuthenticationTokenManager,
   PasswordHash,
@@ -33,4 +35,5 @@ module.exports = {
   DeleteCommentUseCase,
   AddReplyUseCase,
   DeleteReplyUseCase,
+  LikeCommentUseCase,
 };

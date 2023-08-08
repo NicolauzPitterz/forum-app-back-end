@@ -5,6 +5,7 @@ const authentications = require('./http/api/authentications');
 const threads = require('./http/api/threads');
 const comments = require('./http/api/comments');
 const replies = require('./http/api/replies');
+const likes = require('./http/api/likes');
 
 module.exports = {
   users,
@@ -12,4 +13,5 @@ module.exports = {
   threads,
   comments,
   replies,
+  likes,
 };
